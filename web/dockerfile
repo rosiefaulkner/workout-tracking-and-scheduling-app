@@ -18,7 +18,6 @@ RUN docker-php-ext-install pdo pdo_mysql
 COPY ./src /var/www/html
 
 FROM base as development
-COPY ./tests /var/www/html/tests
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY --from=dev-deps app/vendor/ /var/www/html/vendor
 

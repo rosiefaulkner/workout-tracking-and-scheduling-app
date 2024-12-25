@@ -24,10 +24,6 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
-        'R' => 
-        array (
-            'Rosiefaulkner\\Web\\' => 18,
-        ),
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
@@ -35,6 +31,14 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+        ),
+        'M' => 
+        array (
+            'Models\\' => 7,
+        ),
+        'L' => 
+        array (
+            'Libraries\\' => 10,
         ),
         'G' => 
         array (
@@ -47,6 +51,10 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
         array (
             'Dotenv\\' => 7,
             'DeepCopy\\' => 9,
+        ),
+        'C' => 
+        array (
+            'Controllers\\' => 12,
         ),
     );
 
@@ -62,10 +70,6 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Rosiefaulkner\\Web\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -87,6 +91,14 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'Models\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Models',
+        ),
+        'Libraries\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Libraries',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -111,6 +123,10 @@ class ComposerStaticInit4facaf14dd4401d8413c1e795820a518
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Controllers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Controllers',
         ),
     );
 

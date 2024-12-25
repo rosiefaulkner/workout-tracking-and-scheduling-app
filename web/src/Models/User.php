@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\User;
+namespace Models;
 
-use DateTime;
+use Database;
 
 class User
 {
@@ -14,6 +14,8 @@ class User
     private $workouts = [];
     private $schedule = [];
 
+    private $db;
+
     /**
      * Initialize user values
      *
@@ -22,16 +24,34 @@ class User
      * @param string $last_name
      * @param string $email
      * @param string $password
-     *
-     * @return void
      */
-    public function __construct($user_id, $first_name, $last_name, $email, $password): void
+    public function __construct($user_id, $first_name, $last_name, $email, $password)
     {
+        $this->db = new Database;
+
         $this->user_id = $user_id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->email = $email;
         $this->password = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * Get Users
+     *
+     * @return void
+     */
+    public function getUserByID($user_id)
+    {
+        $this->db->query(sprintf('SELECT *
+                          FROM users
+                          WHERE user_id = %s
+                          ORDER BY users.created_at DESC
+                          ', $user_id));
+
+        $results = $this->db->resultSet();
+
+        return $results;
     }
 
     /**
@@ -150,11 +170,11 @@ class User
      * date and time if no date is provided
      *
      * @param array $workout
-     * @param DateTime $date
+     * @param string|null $date
      *
      * @return void
      */
-    public function addToSchedule(array $workout, DateTime $date = null): void
+    public function addToSchedule(array $workout, ?string $date): void
     {
         if ($date === null) {
             $date = date('Y-m-d H:i:s'); // Use the current date and time if no date is provided

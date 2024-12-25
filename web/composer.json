@@ -15,7 +15,9 @@
     "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
-            "Rosiefaulkner\\Web\\": "src/"
+            "Controllers\\": "Controllers/",
+            "Models\\": "Models/",
+            "Libraries\\": "Libraries/"
         }
     },
     "authors": [

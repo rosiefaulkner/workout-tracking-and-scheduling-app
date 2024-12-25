@@ -1,32 +1,35 @@
 <?php
 
-namespace Controllers\User;
+namespace Controllers;
 
-use Controller;
-use Models\User\User;
+use Libraries\Controller;
+use Models\User;
 use DateTime;
 
 class UserController extends Controller
 {
     private $user;
+    private $db;
 
     /**
      * Constructor to initialize User model
      *
      * @param string|int $user_id
+     * @param string $username
      * @param string $first_name
      * @param string $last_name
      * @param string $email
      * @param string $password
      */
-    public function __construct($user_id, $first_name, $last_name, $email, $password)
+    public function __construct($user_id, $username, $first_name, $last_name, $email, $password)
     {
-        $this->user = new User($user_id, $first_name, $last_name, $email, $password);
+        $this->user = new User($user_id, $username, $first_name, $last_name, $email, $password);
     }
 
     /**
      * Create a new user
      *
+     * @param string $username
      * @param string $first_name
      * @param string $last_name
      * @param string $email
@@ -34,9 +37,9 @@ class UserController extends Controller
      *
      * @return string response
      */
-    public function createUser(string $first_name, string $last_name, string $email, string $password): string
+    public function createUser(string $username, string $first_name, string $last_name, string $email, string $password): string
     {
-        $this->user = new User(uniqid(), $first_name, $last_name, $email, $password);
+        $this->user = new User(uniqid(), $username, $first_name, $last_name, $email, $password);
         return json_encode([
             'status' => 'success',
             'first_name' => $this->user->getFirstName(),
@@ -79,7 +82,7 @@ class UserController extends Controller
     /**
      * Update user's email
      *
-     * @param string $emai
+     * @param string $email
      *
      * @return string response
      */
@@ -121,12 +124,13 @@ class UserController extends Controller
      * Schedule a workout for the user
      *
      * @param array $workout
-     * @param DateTime|null $date
+     * @param string|null $date
      *
      * @return string response
      */
-    public function scheduleWorkout(array $workout, DateTime $date = null): string
+    public function scheduleWorkout(array $workout, ?string $date): string
     {
+        $date = $date ?: new DateTime();
         $this->user->addToSchedule($workout, $date);
         return json_encode([
             'status' => 'success',
