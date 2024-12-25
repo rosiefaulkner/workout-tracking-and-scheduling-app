@@ -1,3 +1,9 @@
+--Clean up local
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `equipment`;
+DROP TABLE IF EXISTS `workouts`;
+DROP TABLE IF EXISTS `workouts_movements`;
+
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,  
