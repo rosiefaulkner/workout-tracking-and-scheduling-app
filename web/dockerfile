@@ -15,6 +15,7 @@ RUN --mount=type=bind,source=./composer.json,target=composer.json \
 
 FROM php:8.4-apache as base
 RUN docker-php-ext-install pdo pdo_mysql
+RUN sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /etc/apache2/apache2.conf
 COPY ./src /var/www/html
 
 FROM base as development

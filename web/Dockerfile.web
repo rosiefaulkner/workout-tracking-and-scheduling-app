@@ -15,10 +15,10 @@ RUN --mount=type=bind,source=./composer.json,target=composer.json \
 
 FROM php:8.4-apache as base
 RUN docker-php-ext-install pdo pdo_mysql
+RUN sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /etc/apache2/apache2.conf
 COPY ./src /var/www/html
 
 FROM base as development
-COPY ./tests /var/www/html/tests
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY --from=dev-deps app/vendor/ /var/www/html/vendor
 
