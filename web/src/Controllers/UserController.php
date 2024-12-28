@@ -17,7 +17,7 @@ class UserController extends Controller
     }
 
     public function index() {
-        return json_encode(['data' => $this->userModel->getAllUsers()]);
+        echo json_encode($this->userModel->getAllUsers());
     }
 
     // /**

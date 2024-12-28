@@ -17,7 +17,7 @@ class AccountController extends Controller
     }
 
     public function index() {
-       return json_encode(['data' => $this->userModel->getAllUsers()]);
+       return json_encode($this->userModel->getUserByID(1));
     }
 
     // /**

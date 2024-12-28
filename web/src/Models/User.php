@@ -52,15 +52,13 @@ class User
      */
     public function getUserByID($user_id)
     {
-        $this->db->query(sprintf('SELECT *
+        $stmt = $this->db->query(sprintf('SELECT *
                           FROM users
                           WHERE user_id = %s
                           ORDER BY users.created_at DESC
                           ', $user_id));
 
-        $results = $this->db->resultSet();
-
-        return $results;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**

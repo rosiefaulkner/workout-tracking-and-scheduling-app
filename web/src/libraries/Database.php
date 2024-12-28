@@ -9,7 +9,7 @@
    */
 class Database
 {
-  private static $host = '192.168.1.182';
+  private static $host = 'db';
   private static $user = 'workout_user';
   private static $pass = 'workout-app';
   private static $dbname = 'workout_app';

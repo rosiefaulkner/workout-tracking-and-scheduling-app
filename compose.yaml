@@ -9,6 +9,14 @@ services:
       - ./web/src:/var/www/html
       - ./web/vendor:/var/www/html/vendor
       - ./web/.env:/var/www/.env
+  react:
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
   db:
     image: mariadb:latest
     command: '--default-authentication-plugin=mysql_native_password'

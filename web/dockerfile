@@ -15,7 +15,9 @@ RUN --mount=type=bind,source=./composer.json,target=composer.json \
 
 FROM php:8.4-apache as base
 RUN docker-php-ext-install pdo pdo_mysql
+RUN a2enmod rewrite
 RUN sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /etc/apache2/apache2.conf
+RUN sed -i '/<\/VirtualHost>/i\<IfModule mod_rewrite.c>\n    RewriteEngine On\n    RewriteCond %{REQUEST_URI} !^/index\.php\n    RewriteRule ^(.*)$ /index.php/$1 [L,QSA]\n</IfModule>' /etc/apache2/sites-enabled/000-default.conf
 COPY ./src /var/www/html
 
 FROM base as development
