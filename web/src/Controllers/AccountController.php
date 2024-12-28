@@ -6,7 +6,7 @@ use Libraries\Controller;
 use Models\User;
 use DateTime;
 
-class UserController extends Controller
+class AccountController extends Controller
 {
     private $user;
 
@@ -17,7 +17,7 @@ class UserController extends Controller
     }
 
     public function index() {
-        return json_encode(['data' => $this->userModel->getAllUsers()]);
+       return json_encode(['data' => $this->userModel->getAllUsers()]);
     }
 
     // /**

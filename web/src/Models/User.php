@@ -16,25 +16,34 @@ class User
 
     private $db;
 
-    /**
-     * Initialize user values
-     *
-     * @param string|int $user_id
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     */
-    public function __construct($user_id, $first_name, $last_name, $email, $password)
-    {
-        $this->db = new Database;
-
-        $this->user_id = $user_id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+    public function __construct($db) {
+        $this->db = $db;
     }
+
+    public function getAllUsers() {
+        $stmt = $this->db->query("SELECT * FROM users");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    // /**
+    //  * Initialize user values
+    //  *
+    //  * @param string|int $user_id
+    //  * @param string $first_name
+    //  * @param string $last_name
+    //  * @param string $email
+    //  * @param string $password
+    //  */
+    // public function __construct($user_id, $first_name, $last_name, $email, $password)
+    // {
+    //     $this->db = new Database;
+
+    //     $this->user_id = $user_id;
+    //     $this->first_name = $first_name;
+    //     $this->last_name = $last_name;
+    //     $this->email = $email;
+    //     $this->password = password_hash($password, PASSWORD_DEFAULT);
+    // }
 
     /**
      * Get Users

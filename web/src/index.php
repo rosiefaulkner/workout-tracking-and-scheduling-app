@@ -1,9 +1,19 @@
 <?php
 
 require "./vendor/autoload.php";
-spl_autoload_register(function ($className) {
-    require_once 'Libraries/' . $className . '.php';
-});
-new Controllers\UserController(1, 'boopsy', 'brian', 'salvador', 'bribri@gmail.com', '123322');
 
-echo 'hello world';
+require './Libraries/Router.php';
+require './Libraries/Database.php';
+
+
+header('Content-Type: application/json');
+
+$db = Database::getInstance();
+$router = new Router();
+
+$router->add('GET', '/', [new Controllers\LoginController(), 'index']);
+$router->add('GET', '/users', [new Controllers\UserController($db), 'index']);
+$router->add('GET', '/account', [new Controllers\AccountController($db), 'index']);
+
+$router->dispatch();
+

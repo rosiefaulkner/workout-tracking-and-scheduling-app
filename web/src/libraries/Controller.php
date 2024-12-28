@@ -12,7 +12,7 @@ class Controller
     public function model($model)
     {
         // Require model file
-        require_once '../src/Models/' . $model . '.php';
+        require_once 'Models\\' . $model . '.php';
 
         // Instatiate model
         return new $model();
@@ -27,8 +27,8 @@ class Controller
     public function view($view, $data = []): void
     {
         // Check for view file
-        if (file_exists('../app/views/' . $view . '.php')) {
-            require_once '../app/views/' . $view . '.php';
+        if (file_exists('../../public/index.html')) {
+            require_once '../../public/index.html';
         } else {
             // View does not exist
             die('View does not exist');
