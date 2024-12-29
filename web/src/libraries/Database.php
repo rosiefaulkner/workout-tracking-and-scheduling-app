@@ -63,6 +63,18 @@ class Database
   }
 
   /**
+   * PDO Quote
+   *
+   * @param string $val
+   *
+   * @return string PDO quoted value
+   */
+  public function quote(string $val): string
+  {
+    return $this->dbh->quote($val);
+  }
+
+  /**
    * Bind values
    *
    * @param string $param

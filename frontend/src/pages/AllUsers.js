@@ -5,7 +5,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get('/users')
+    axiosInstance.get('user')
       .then(response => setUsers(response.data))
       .catch(error => console.error(error));
   }, []);

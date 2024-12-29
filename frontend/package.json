@@ -3,12 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nextui-org/button": "^2.2.8",
+    "@nextui-org/form": "^2.1.7",
+    "@nextui-org/react": "^2.6.10",
+    "@nextui-org/system": "^2.4.5",
+    "@nextui-org/theme": "^2.4.4",
+    "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
+    "framer-motion": "^11.15.0",
+    "postcss": "^8.4.49",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "styled-components": "^6.1.13"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "tailwindcss": "^3.4.17",
     "web-vitals": "^4.2.4"
   }
 }

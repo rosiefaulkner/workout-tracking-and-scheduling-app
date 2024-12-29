@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../helpers/axiosInstance';
+import React from "react";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import LoginForm from "./../components/forms/login/LoginForm";
+import SignupForm from "../components/forms/signup/SignupForm";
 
-const Login = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axiosInstance.get('/users')
-      .then(response => console.log("response: ", response))
-      .catch(error => console.error(error));
-  }, []);
+export default function Login() {
 
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user.user_id}>{user.first_name}</li>
-        ))}
-      </ul>
+    <div className="flex w-full flex-col">
+      <Tabs aria-label="Options">
+        <Tab key="login" title="Login">
+          <Card>
+            <CardBody>
+              <LoginForm />
+            </CardBody>
+          </Card>
+        </Tab>
+        <Tab key="signup" title="Sign Up">
+          <Card>
+            <CardBody>
+              <SignupForm />
+            </CardBody>
+          </Card>
+        </Tab>
+      </Tabs>
     </div>
   );
-};
-
-export default Login;
+}

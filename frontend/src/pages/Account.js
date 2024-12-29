@@ -5,7 +5,7 @@ const Account = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get('/account')
+    axiosInstance.get('/account/get-user')
       .then(response => setUsers(response.data))
       .catch(error => console.error(error));
   }, []);

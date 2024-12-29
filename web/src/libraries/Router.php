@@ -1,16 +1,38 @@
 <?php
 
 class Router {
+
     private $routes = [];
 
-    public function add($method, $path, $handler) {
+    /**
+     * Create array of API endpoint
+     *
+     * @param string $method
+     * @param string $path
+     * @param string $handler
+     *
+     * @return void
+     */
+    public function add($method, $path, $handler): void
+    {
         $this->routes[] = compact('method', 'path', 'handler');
     }
 
-    public function dispatch($requestMethod, $requestUri) {
+    /**
+     * Dispatch API routes
+     *
+     * @param string request method ex. GET, POST, etc.
+     * @param string request URI
+     *
+     * @return mixed callback for controller endpoint method, false if error
+     */
+    public function dispatch($requestMethod, $requestUri): mixed
+    {
         foreach ($this->routes as $route) {
             if ($requestMethod === $route['method']) {
-                return call_user_func_array($route['handler'], array_slice(explode( '/', $requestUri ), 1));
+                $path = call_user_func_array($route['handler'], array_slice(explode( '/', $requestUri['path'] ), 1));
+                $this->routes = [];
+                return $path;
             }
         }
 

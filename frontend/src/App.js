@@ -1,11 +1,14 @@
 import React from 'react';
 import AppRoutes from '../src/routes';
+import { NextUIProvider } from "@nextui-org/react";
+import './output.css';
+
 
 const App = () => {
   return (
-    <div>
+    <NextUIProvider>
       <AppRoutes />
-    </div>
+    </NextUIProvider>
   );
 };
 

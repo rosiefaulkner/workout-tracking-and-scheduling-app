@@ -17,43 +17,7 @@ class UserController extends Controller
     }
 
     public function index() {
-        echo json_encode($this->userModel->getAllUsers());
-    }
-
-    // /**
-    //  * Constructor to initialize User model
-    //  *
-    //  * @param string|int $user_id
-    //  * @param string $username
-    //  * @param string $first_name
-    //  * @param string $last_name
-    //  * @param string $email
-    //  * @param string $password
-    //  */
-    // public function __construct($user_id, $username, $first_name, $last_name, $email, $password)
-    // {
-    //     $this->user = new User($user_id, $username, $first_name, $last_name, $email, $password);
-    // }
-
-    /**
-     * Create a new user
-     *
-     * @param string $username
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     *
-     * @return string response
-     */
-    public function createUser(string $username, string $first_name, string $last_name, string $email, string $password): string
-    {
-        $this->user = new User(uniqid(), $username, $first_name, $last_name, $email, $password);
-        return json_encode([
-            'status' => 'success',
-            'first_name' => $this->user->getFirstName(),
-            'last_name' => $this->user->getLastName()
-        ]);
+        echo json_encode($this->userModel->instantiateUser([]));
     }
 
     /**

@@ -5,7 +5,7 @@ function Users() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get('/users').then(response => setUsers(response.data));
+    axiosInstance.get('user').then(response => setUsers(response.data));
   }, []);
 
   return (

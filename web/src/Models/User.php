@@ -16,50 +16,107 @@ class User
 
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getAllUsers() {
+    /**
+     * Instantiate user
+     *
+     * @param array $user_details
+     *
+     * @return void
+     */
+    public function instantiateUser(array $user_details = []): void
+    {
+        if (empty($user_details)) {
+            return;
+        }
+        [$user_id, $first_name, $last_name, $email, $workouts, $schedule] = $user_details;
+        $this->user_id = $user_id;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->email = $email;
+        $this->workouts = $workouts;
+        $this->schedule = $schedule;
+    }
+
+    /**
+     * Get all users
+     *
+     * @return void
+     */
+    public function getAllUsers()
+    {
         $stmt = $this->db->query("SELECT * FROM users");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    // /**
-    //  * Initialize user values
-    //  *
-    //  * @param string|int $user_id
-    //  * @param string $first_name
-    //  * @param string $last_name
-    //  * @param string $email
-    //  * @param string $password
-    //  */
-    // public function __construct($user_id, $first_name, $last_name, $email, $password)
-    // {
-    //     $this->db = new Database;
-
-    //     $this->user_id = $user_id;
-    //     $this->first_name = $first_name;
-    //     $this->last_name = $last_name;
-    //     $this->email = $email;
-    //     $this->password = password_hash($password, PASSWORD_DEFAULT);
-    // }
-
     /**
-     * Get Users
+     * Get User by ID
      *
-     * @return void
+     * @param string $user_id
+     *
+     * @return array user details
      */
-    public function getUserByID($user_id)
+    public function getUserByID(string $user_id): array
     {
         $stmt = $this->db->query(sprintf('SELECT *
-                          FROM users
-                          WHERE user_id = %s
-                          ORDER BY users.created_at DESC
-                          ', $user_id));
+        FROM users
+        WHERE user_id = %s
+        LIMIT 1
+        ', $user_id));
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Find user by email 
+     *
+     * @param string $email
+     *
+     * @return array user details
+     */
+    public function getUserByEmail(string $email): array
+    {
+        $email_pdo_quoted = $this->db->quote($email);
+        $stmt = $this->db->query(sprintf('SELECT *
+        FROM users
+        WHERE email = %s
+        ', $email_pdo_quoted));
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Verify password during log in attempt
+     *
+     * @param string $email
+     * @param string $password
+     *
+     * @return bool|array false if login not successful,
+     * otherwise returns array of user details
+     */
+    public function verifyPassword($email, $password): bool|array
+    {
+        $successful = false;
+        $row = $this->getUserByEmail($email);
+
+        if (empty($row)) {
+            return false;
+        }
+
+        $hashed_password = $row['password_hash'];
+        if (password_verify($password, $hashed_password)) {
+            $successful = !empty($row) ? $row : $successful;
+        } else {
+            $successful = false;
+        }
+
+        return $successful;
+    }
+
 
     /**
      * Get user ID for current user
@@ -135,19 +192,6 @@ class User
     public function setEmail(string $email): void
     {
         $this->email = $email;
-    }
-
-    /**
-     * Verify password
-     *
-     * @param string $password
-     *
-     * @return bool returns TRUE if the password
-     * and hash match, or FALSE otherwise 
-     */
-    public function checkPassword(string $password): bool
-    {
-        return password_verify($password, $this->password);
     }
 
     /**

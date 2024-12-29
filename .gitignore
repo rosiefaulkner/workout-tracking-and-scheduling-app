@@ -26,3 +26,5 @@ yarn-error.log*
 .env
 root.txt
 password.txt
+
+/frontend/node_modules

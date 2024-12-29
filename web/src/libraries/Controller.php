@@ -7,15 +7,28 @@ class Controller
     /**
      * Instantiate model
      *
-     * @param [type] $model
+     * @param string $model
      */
-    public function model($model)
+    public function model(string $model)
     {
         // Require model file
         require_once 'Models\\' . $model . '.php';
 
         // Instatiate model
         return new $model();
+    }
+
+    /**
+     * Redirect helper function
+     *
+     * @param string $page
+     *
+     * @return void
+     */
+    public function redirect(string $page)
+    {
+        $url_root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+        header('location: ' . $url_root . '/' . $page);
     }
 
     /**
