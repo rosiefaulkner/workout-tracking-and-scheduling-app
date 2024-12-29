@@ -9,14 +9,21 @@ module.exports = {
     "./src/components/**.{js,ts,jsx,tsx}",
     "./src/pages/*.js",
     "./src/components/*.js",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/@nextui-org/react/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      // Additional custom styles can go here
+      colors: {
+        primary: "#1E90FF", // Custom primary color
+        secondary: "#4B5563", // Custom secondary color
+        danger: "#EF4444", // Error color
+      },
     },
   },
   darkMode: "class", // Enable dark mode based on a class
   plugins: [
+    require("@tailwindcss/forms"),
     nextui({
       layout: {
         dividerWeight: "1px", // h-divider the default height applied to the divider component
