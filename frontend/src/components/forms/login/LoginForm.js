@@ -49,11 +49,9 @@ export default function LoginForm() {
     // Clear errors and submit
     setErrors({});
     setSubmitted(data);
-console.log("data: ", data);
+
     try {
       const response = await axiosInstance.post("/login", data);
-      console.log("response", response);
-      console.log("response.status", response.status);
       if (
         !response ||
         response?.status !== 200 ||

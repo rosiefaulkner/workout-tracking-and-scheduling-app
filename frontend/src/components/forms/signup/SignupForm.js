@@ -52,8 +52,6 @@ export default function SignupForm() {
 
     try {
       const response = await axiosInstance.post("/account/create-user", data);
-      console.log("response", response);
-      console.log("response.status", response.status);
       if (!response || response?.status !== 200 || response?.data?.status !== "success") {
         setResponseMessage(response?.data?.message || "Oops. Something went wrong.");
       } else {
