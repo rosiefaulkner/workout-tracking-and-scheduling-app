@@ -12,10 +12,14 @@ import {
     const userInfo = userDataFields.userDataFields;
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+      logout();
+      navigate("/login");
+    }
+
     useEffect(() => {
         if (!userInfo?.email || userInfo.email === "Your email") {
-            logout();
-            navigate("/login");
+          handleLogout();
         }
     }, [userInfo]);
 
@@ -40,7 +44,7 @@ import {
             <DropdownItem key="edit_profile">Edit Profile</DropdownItem>
             <DropdownItem key="invite_friends">Invite friends</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & feedback</DropdownItem>
-            <DropdownItem key="logout" onPress={() => { logout() }} color="danger">
+            <DropdownItem key="logout" onPress={() => handleLogout()} color="danger">
               Log Out
             </DropdownItem>
           </DropdownMenu>

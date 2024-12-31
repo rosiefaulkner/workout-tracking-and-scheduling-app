@@ -22,8 +22,9 @@ const AppProvider = ({ children }) => {
   }, [userData]);
 
   const logout = () => {
-    setUserData({ email: null, first_name: null, last_name: null });
+    setUserData(null);
     localStorage.removeItem("userData");
+    window.location.href = "/login";
   };
 
   return (
