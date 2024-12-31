@@ -1,113 +1,87 @@
-import React from "react";
-import {Input, Checkbox, CheckboxGroup, Link, User, Chip, cn} from "@nextui-org/react";
+import React, { useState } from "react";
+import { Input, Checkbox, CheckboxGroup, ScrollShadow, Chip, cn } from "@nextui-org/react";
+import { useInView } from "react-intersection-observer";
+import movementsData from "./../../../api/movements/movements.json";
 
-export const CustomCheckbox = ({user, statusColor, value}) => {
-    return (
-      <Checkbox
-        aria-label={user.name}
-        classNames={{
-          base: cn(
-            "inline-flex max-w-md w-full bg-content1 m-0",
-            "hover:bg-content2 items-center justify-start",
-            "cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
-            "data-[selected=true]:border-primary",
-          ),
-          label: "w-full",
-        }}
-        value={value}
-      >
-        <div className="w-full flex justify-between gap-2">
-          <User
-            avatarProps={{size: "md", src: user.avatar}}
-            description={
-              <Link isExternal href={user.url} size="sm">
-                @{user.username}
-              </Link>
-            }
-            name={user.name}
-          />
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-tiny text-default-500">{user.role}</span>
-            <Chip color={statusColor} size="sm" variant="flat">
-              {user.status}
-            </Chip>
-          </div>
-        </div>
-      </Checkbox>
-    );
-  };
-  
-  function CreateWorkout() {
-    const [groupSelected, setGroupSelected] = React.useState([]);
-  
-    return (
-      <>
-      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mb-16">
-        <Input label="Workout Routine Title" type="text" />
-      </div>
-      <div className="flex flex-col gap-1 w-full">
-        <CheckboxGroup
+export const LazyCheckbox = ({ movement, value }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.1,
+  });
+
+  return (
+    <div ref={ref}>
+      {inView && (
+        <Checkbox
+          aria-label={movement.name}
           classNames={{
-            base: "w-full",
+            base: cn(
+              "inline-flex max-w-full w-full bg-content1 m-0",
+              "hover:bg-content2 items-center justify-start",
+              "cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent",
+              "data-[selected=true]:border-primary"
+            ),
+            label: "w-full",
           }}
-          label="Select excercises"
-          value={groupSelected}
-          onChange={setGroupSelected}
+          value={value}
         >
-          <CustomCheckbox
-            statusColor="secondary"
-            user={{
-              name: "Junior Garcia",
-              avatar: "https://avatars.githubusercontent.com/u/30373425?v=4",
-              username: "jrgarciadev",
-              url: "https://x.com/jrgarciadev",
-              role: "Software Developer",
-              status: "Active",
+          <div className="w-full flex justify-between gap-2">
+            <div>
+              <h3 className="text-lg font-semibold">{movement.name}</h3>
+              <p className="text-sm text-default-500">Equipment: {movement.equipment || "N/A"}</p>
+              <p className="text-sm text-default-500">Level: {movement.level || "N/A"}</p>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              {movement.primaryMuscles && <Chip color="warning" size="md" variant="flat">
+                {movement.primaryMuscles}
+              </Chip>}
+            </div>
+          </div>
+        </Checkbox>
+      )}
+    </div>
+  );
+};
+
+function CreateWorkout() {
+  const [groupSelected, setGroupSelected] = useState([]);
+
+  return (
+    <>
+      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mb-16">
+        <Input classNames={{
+              mainWrapper: "h-full pb-0",
+              input:
+                "pb-0 text-md border-transparent focus:border-transparent focus:ring-0",
+              inputWrapper:
+                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            value="junior"
-          />
-          <CustomCheckbox
-            statusColor="warning"
-            user={{
-              name: "John Doe",
-              avatar: "https://i.pravatar.cc/300?u=a042581f4e29026707d",
-              username: "johndoe",
-              url: "#",
-              role: "Product Designer",
-              status: "Vacation",
+            label="Workout Routine Title"
+            type="text" />
+      </div>
+      <h3 className="text-lg font-semibold">Select exercises:</h3>
+      <div className="flex flex-col gap-1 w-full">
+        <ScrollShadow
+          orientation="vertical"
+          className="w-full max-w-full h-[400px] overflow-y-auto shadow-md"
+        >
+          <CheckboxGroup
+            classNames={{
+              base: "w-full mb-6",
             }}
-            value="johndoe"
-          />
-          <CustomCheckbox
-            statusColor="danger"
-            user={{
-              name: "Zoey Lang",
-              avatar: "https://i.pravatar.cc/300?u=a042581f4e29026704d",
-              username: "zoeylang",
-              url: "#",
-              role: "Technical Writer",
-              status: "Out of office",
-            }}
-            value="zoeylang"
-          />
-          <CustomCheckbox
-            statusColor="secondary"
-            user={{
-              name: "William Howard",
-              avatar: "https://i.pravatar.cc/300?u=a048581f4e29026701d",
-              username: "william",
-              url: "#",
-              role: "Sales Manager",
-              status: "Active",
-            }}
-            value="william"
-          />
-        </CheckboxGroup>
+            label=" "
+            value={groupSelected}
+            onChange={setGroupSelected}
+          >
+            {movementsData.movements.map((movement, index) => (
+              <LazyCheckbox key={index} movement={movement} value={movement.name} />
+            ))}
+          </CheckboxGroup>
+        </ScrollShadow>
         <p className="mt-4 ml-1 text-default-500">Selected: {groupSelected.join(", ")}</p>
       </div>
-      </>
-    );
-  }
-
+    </>
+  );
+}
 
 export default CreateWorkout;
