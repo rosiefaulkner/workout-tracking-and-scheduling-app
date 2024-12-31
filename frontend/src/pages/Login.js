@@ -11,7 +11,10 @@ export default function Login() {
           <Card className="max-w-md w-full mt-20 shadow-lg bg-white">
             <CardBody>
               <div className="w-full py-10">
-                <Tabs aria-label="Login or Signup Options" className="w-full block">
+                <Tabs
+                  aria-label="Login or Signup Options"
+                  className="w-full block"
+                >
                   <Tab key="login" title="Login">
                     <LoginForm />
                   </Tab>

@@ -3,6 +3,8 @@
 namespace Models;
 
 use Exception;
+use Controllers\LoginController;
+use Models\User;
 
 class Account
 {
@@ -17,7 +19,8 @@ class Account
     }
 
     /**
-     * Create new user
+     * Create new user. If successful, session is created;
+     * else, return error response.
      *
      * @param string $username
      * @param string $email
@@ -37,6 +40,13 @@ class Account
             $query->execute(['username' => $this->username, 'email' => $this->email, 'password_hash' => $password_hash]);
             $status = 'success';
             $message = 'User created successfully.';
+            $userData = new User($this->db);
+            if (!$userData->getUserByEmail($this->email);) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Email not found'
+                ]);
+            }
         } catch (Exception $e) {
             $message = $e->getMessage();
         }

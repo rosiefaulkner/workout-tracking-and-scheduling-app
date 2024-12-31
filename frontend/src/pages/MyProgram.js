@@ -19,7 +19,7 @@ import {
 } from "@nextui-org/react";
 import { workoutOverview, workoutSchedule } from "../helpers/dummyData";
 
-function Account() {
+function MyProgram() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,7 +71,7 @@ function Account() {
           {workoutOverview.explanation}
           <div className="mt-4">
             <Button onPress={onOpen}>Overview</Button>
-            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} className="dark text-foreground bg-background px-3">
+            <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
               <DrawerContent>
                 {(onClose) => (
                   <>
@@ -153,4 +153,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default MyProgram;

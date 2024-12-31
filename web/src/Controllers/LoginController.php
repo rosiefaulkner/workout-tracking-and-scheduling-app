@@ -45,7 +45,6 @@ class LoginController extends Controller
                 'status' => 'error',
                 'message' => 'Missing credentials'
             ]);
-            return;
         }
   
         // Check email exists
@@ -54,7 +53,6 @@ class LoginController extends Controller
                 'status' => 'error',
                 'message' => 'Email not found'
             ]);
-            return;
         }
   
         // Verify password matches user by email
@@ -71,8 +69,16 @@ class LoginController extends Controller
         }
       }
   
-      public function createUserSession($user)
+      /**
+       * Create user session
+       *
+       * @param array $user
+       *
+       * @return void
+       */
+      public function createUserSession(array $user): void
       {
+        session_start();
         $_SESSION['user_id'] = $user['user_id'] ?: null;
         $_SESSION['email'] = $user['email'] ?: null;
         $_SESSION['username'] = $user['username'] ?: null;

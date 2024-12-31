@@ -2,17 +2,14 @@
 
 namespace Models;
 
-use Database;
-
 class User
 {
-    private $user_id;
-    private $first_name;
-    private $last_name;
-    private $email;
-    private $password;
-    private $workouts = [];
-    private $schedule = [];
+    public $user_id;
+    public $first_name;
+    public $last_name;
+    public $email;
+    public $workouts = [];
+    public $schedule = [];
 
     private $db;
 
@@ -33,13 +30,23 @@ class User
         if (empty($user_details)) {
             return;
         }
-        [$user_id, $first_name, $last_name, $email, $workouts, $schedule] = $user_details;
-        $this->user_id = $user_id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->email = $email;
-        $this->workouts = $workouts;
-        $this->schedule = $schedule;
+        $this->user_id = $user_details["user_id"] ?? $this->user_id ?? "";
+        $this->setFirstName($user_details["first_name"] ?? $this->first_name ?? "");
+        $this->setLastName($user_details["last_name"] ?? $this->last_name ?? "");
+        $this->setEmail($user_details["email"] ?? $this->email ?? "");
+        $this->setWorkouts($user_details["workouts"] ?? $this->workouts ?? []);
+        $this->setSchedule($user_details["schedule"] ?? $this->schedule ?? []);
+    }
+
+    /**
+     * Get current user data
+     *
+     * @return array user data
+     */
+    public function getCurrentUserData(): array
+    {
+        $user_details = [$this->user_id, $this->first_name, $this->last_name, $this->email, $this->workouts, $this->schedule];
+        return $user_details;
     }
 
     /**
@@ -86,7 +93,13 @@ class User
         WHERE email = %s
         ', $email_pdo_quoted));
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        if (!empty($row)) {
+            $this->instantiateUser($row);
+        }
+
+        return is_array($row) ? $row : [];
     }
 
     /**
@@ -207,6 +220,18 @@ class User
     }
 
     /**
+     * Set all workouts for the user
+     *
+     * @param array $workout
+     *
+     * @return void
+     */
+    public function setWorkouts(array $workouts): void
+    {
+        $this->workouts = $workouts;
+    }
+
+    /**
      * Get all workouts for the user
      *
      * @return array all workouts assigned to user
@@ -231,6 +256,18 @@ class User
             $date = date('Y-m-d H:i:s'); // Use the current date and time if no date is provided
         }
         $this->schedule[$date] = $workout;
+    }
+
+    /**
+     * Set the user's workout schedule
+     *
+     * @param array $schedule
+     *
+     * @return void
+     */
+    public function setSchedule(array $schedule): void
+    {
+        $this->schedule = $schedule;
     }
 
     /**
