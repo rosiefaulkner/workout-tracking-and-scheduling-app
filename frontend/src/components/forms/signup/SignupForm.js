@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import {Form, Input, Button} from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import {Alert, Form, Input, Button} from "@nextui-org/react";
 import axiosInstance from "../../../helpers/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(null);
   const [errors, setErrors] = useState({});
-  const [responseMessage, setResponseMessage] = useState("");
+  const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
+  const navigate = useNavigate();
 
   const getPasswordError = (value) => {
     if (!submitted) return null;
@@ -40,16 +42,34 @@ export default function SignupForm() {
     try {
       const response = await axiosInstance.post("/account/create-user", data);
       if (!response || response?.status !== 200 || response?.data?.status !== "success") {
-        setResponseMessage(response?.data?.message || "Oops. Something went wrong.");
+        if (response) {
+          setErrors({ message: response?.message || "Oops. Something went wrong." });
+        }
+        setIsSignupSuccessful(false);
       } else {
-        setResponseMessage(response?.data?.message);
+        setIsSignupSuccessful(true);
       }
     } catch (error) {
-      setResponseMessage("Whoops. Something went wrong.");
+      setIsSignupSuccessful(false)
+      setErrors({ message: "Whoops, something went wrong." });
     }
   };
 
+  useEffect(() => {
+      if (!isSignupSuccessful) {
+        return;
+      }
+      setErrors({});
+      navigate("/account");
+    }, [isSignupSuccessful]);
+
   return (
+    <>
+    {errors?.message && (
+      <div className="w-full flex items-center my-3 alert-danger rounded-medium">
+        <Alert color="danger" title={errors.message} />
+      </div>
+    )}
     <Form className="flex flex-col gap-4 max-w-md" onSubmit={onSubmit}>
       <Input
         name="username"
@@ -77,5 +97,6 @@ export default function SignupForm() {
         Sign Up
       </Button>
     </Form>
+    </>
   );
 }

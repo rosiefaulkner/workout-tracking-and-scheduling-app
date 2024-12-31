@@ -1,6 +1,7 @@
 --Clean up local
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `equipment`;
+DROP TABLE IF EXISTS `movements`;
 DROP TABLE IF EXISTS `workouts`;
 DROP TABLE IF EXISTS `workouts_movements`;
 
@@ -12,7 +13,7 @@ CREATE TABLE users (
     first_name VARCHAR(50),             
     last_name VARCHAR(50),              
     date_of_birth DATE,                   
-    gender ENUM('Male', 'Female', 'Other'),
+    gender ENUM('male', 'female', 'other'),
     height_in DECIMAL(5, 2),              
     weight_lb DECIMAL(5, 2),          
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -34,7 +35,7 @@ CREATE TABLE workouts (
     workout_id INT AUTO_INCREMENT PRIMARY KEY,
     workout_type VARCHAR(50) NOT NULL,      
     duration_minutes INT NOT NULL,             
-    intensity ENUM('Low', 'Medium', 'High'),   
+    intensity ENUM('low', 'medium', 'high'),   
     description TEXT,                                
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
@@ -42,13 +43,23 @@ CREATE TABLE workouts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE movements (
-    movement_id INT AUTO_INCREMENT PRIMARY KEY,
-    movement_name VARCHAR(50) NOT NULL, 
-    equipment_id INT NOT NULL,      
-    description TEXT,                                
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-    INDEX (movement_id)
+  movement_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) DEFAULT NULL,
+  aliases VARCHAR(255) DEFAULT NULL,
+  primary_muscles VARCHAR(255) DEFAULT NULL,
+  secondary_muscles VARCHAR(255) DEFAULT NULL,
+  focus ENUM('pull', 'push', 'static'),
+  level ENUM('beginner', 'intermediate', 'expert'),
+  mechanic ENUM('compound', 'isolation'),
+  equipment ENUM('body only', 'machine', 'other', 'foam roll', 'kettlebells', 'dumbbell', 'cable', 'barbell', 'bands', 'medicine ball', 'exercise ball', 'e-z curl bar') DEFAULT NULL,
+  category ENUM('strength', 'stretching', 'plyometrics', 'strongman', 'powerlifting', 'cardio', 'olympic weightlifting'),
+  instructions VARCHAR(255) DEFAULT NULL,
+  description VARCHAR(255) DEFAULT NULL,
+  tips VARCHAR(255) DEFAULT NULL,
+  img_src VARCHAR(255) DEFAULT NULL,
+  date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX (movement_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE workouts_movements (

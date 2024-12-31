@@ -1,17 +1,24 @@
-import React, { useState } from "react";
-import { Form, Input, Button } from "@nextui-org/react";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { Alert, Form, Input, Button } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../helpers/axiosInstance";
+import { AppContext } from "../../../AppContext/AppContext";
 
 export default function LoginForm() {
+  const alertMessage = useRef(null);
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(null);
   const [errors, setErrors] = useState({});
-  const [responseMessage, setResponseMessage] = useState("");
+  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
+  const navigate = useNavigate();
+  const { setUserData } = useContext(AppContext);
+  
 
   const getPasswordError = (value) => {
     if (!submitted) return null;
     if (value.length < 4) return "Password must be at least 4 characters.";
-    if (!/[A-Z]/.test(value)) return "Password must include an uppercase letter.";
+    if (!/[A-Z]/.test(value))
+      return "Password must include an uppercase letter.";
     if (!/[^a-zA-Z0-9]/.test(value)) return "Password must include a symbol.";
     return null;
   };
@@ -41,18 +48,37 @@ export default function LoginForm() {
         response?.status !== 200 ||
         response?.data?.status !== "success"
       ) {
-        setResponseMessage(
-          response?.data?.message || "Oops. Something went wrong."
-        );
+        if (response?.message) {
+          alertMessage.current = ({ message: response.message});
+        } else {
+          setErrors({ message: "Double check your credentials and try again."});
+        }
+        setIsLoginSuccessful(false);
       } else {
-        setResponseMessage(response?.data?.message);
+        setUserData({...response?.data});
+        setIsLoginSuccessful(true);
       }
     } catch (error) {
-      setResponseMessage("Whoops. Something went wrong.");
+      setErrors({ message: "Whoops, something went wrong." });
+      setIsLoginSuccessful(false);
     }
   };
 
+  useEffect(() => {
+    if (!isLoginSuccessful) {
+      return;
+    }
+    setErrors({});
+    navigate("/account");
+  }, [isLoginSuccessful]);
+
   return (
+    <>
+    {errors?.message && (
+      <div className="w-full flex items-center my-3 alert-danger rounded-medium">
+        <Alert color="danger" title={errors.message} />
+      </div>
+    )}
     <Form className="flex flex-col gap-4 max-w-md" onSubmit={onSubmit}>
       <Input
         name="email"
@@ -75,5 +101,6 @@ export default function LoginForm() {
         Login
       </Button>
     </Form>
+    </>
   );
 }

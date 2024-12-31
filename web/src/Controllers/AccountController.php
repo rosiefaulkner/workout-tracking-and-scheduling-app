@@ -4,13 +4,16 @@ namespace Controllers;
 
 use Libraries\Controller;
 use Models\Account;
+use Models\User;
 
 class AccountController extends Controller
 {
+    private $db;
     private $accountModel;
 
     public function __construct($db)
     {
+        $this->db = $db;
         $this->accountModel = new Account($db);
     }
 
@@ -40,5 +43,17 @@ class AccountController extends Controller
             return;
         }
         $this->accountModel->createUser($username, $email, $password_hash);
+    }
+
+    /**
+     * Get session data for current user
+     *
+     * @return void
+     */
+    public function getCurrentUser(): void
+    {
+        $userModel = new User($this->db);
+        $userData = (array) $userModel->getCurrentUserData();
+        echo json_encode($userData);
     }
 }
