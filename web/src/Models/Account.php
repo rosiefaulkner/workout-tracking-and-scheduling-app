@@ -41,7 +41,7 @@ class Account
             $status = 'success';
             $message = 'User created successfully.';
             $userData = new User($this->db);
-            if (!$userData->getUserByEmail($this->email);) {
+            if (!$userData->getUserByEmail($this->email)) {
                 echo json_encode([
                     'status' => 'error',
                     'message' => 'Email not found'

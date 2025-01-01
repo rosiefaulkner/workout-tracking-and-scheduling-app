@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS `equipment`;
 DROP TABLE IF EXISTS `movements`;
 DROP TABLE IF EXISTS `workouts`;
 DROP TABLE IF EXISTS `workouts_movements`;
+DROP TABLE IF EXISTS `users_workouts`;
 
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,10 +34,13 @@ CREATE TABLE equipment (
 
 CREATE TABLE workouts (
     workout_id INT AUTO_INCREMENT PRIMARY KEY,
-    workout_type VARCHAR(50) NOT NULL,      
-    duration_minutes INT NOT NULL,             
-    intensity ENUM('low', 'medium', 'high'),   
-    description TEXT,                                
+    workout_title VARCHAR(255) NOT NULL,
+    workout_type VARCHAR(50) DEFAULT NULL,      
+    duration_minutes INT DEFAULT NULL,             
+    intensity ENUM('low', 'medium', 'high') DEFAULT NULL,
+    created_by_user_id INT DEFAULT NULL,       
+    description TEXT,
+    visibility TINYINT(1) NOT NULL DEFAULT 1,                        
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
     INDEX (workout_id)
@@ -53,7 +57,7 @@ CREATE TABLE movements (
   mechanic ENUM('compound', 'isolation'),
   equipment ENUM('body only', 'machine', 'other', 'foam roll', 'kettlebells', 'dumbbell', 'cable', 'barbell', 'bands', 'medicine ball', 'exercise ball', 'e-z curl bar') DEFAULT NULL,
   category ENUM('strength', 'stretching', 'plyometrics', 'strongman', 'powerlifting', 'cardio', 'olympic weightlifting'),
-  instructions VARCHAR(255) DEFAULT NULL,
+  instructions TEXT DEFAULT NULL,
   description VARCHAR(255) DEFAULT NULL,
   tips VARCHAR(255) DEFAULT NULL,
   img_src VARCHAR(255) DEFAULT NULL,
@@ -76,4 +80,25 @@ CREATE TABLE workouts_movements (
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     INDEX (movement_id, equipment_id, workout_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE users_workouts (
+    users_workouts_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    movement_id INT NOT NULL,
+    movement_name VARCHAR(255) NOT NULL,
+    workout_title VARCHAR(255) NOT NULL,
+    workout_id INT NOT NULL,
+    duration_minutes INT DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    INDEX (workout_id),
+    INDEX (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
