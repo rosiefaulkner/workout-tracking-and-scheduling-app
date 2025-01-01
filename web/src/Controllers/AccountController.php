@@ -66,12 +66,14 @@ class AccountController extends Controller
     {
         $form_data = (array) json_decode(file_get_contents('php://input'), TRUE);
         $workout_title = trim($form_data['workoutTitle']) ?? null;
-        $movements_checked = trim($form_data['movementsChecked']) ?? null;
-        $program_length_value = trim($form_data['programLengthValue']) ?? null;
+        $movements_checked = is_array($form_data['movementsChecked']) && !empty($form_data['movementsChecked']) ? $form_data['movementsChecked'] : [];
+        $program_length_value = $form_data['programLengthValue'] ? (int) $form_data['programLengthValue'] : 1;
         $description_value = trim($form_data['descriptionValue']) ?? null;
-        var_dump("72");
+        $email = $form_data['userEmail'];
+        $user_id = $form_data['userID'];
+        $workout = compact('user_id', 'email', 'workout_title', 'movements_checked', 'program_length_value', 'description_value');
         $userModel = new User($this->db);
-        $response = (array) $userModel->addWorkout([$workout_title, $movements_checked, $program_length_value, $description_value]);
+        $response = (array) $userModel->addWorkout($workout);
         echo json_encode($response);
     }
 }
