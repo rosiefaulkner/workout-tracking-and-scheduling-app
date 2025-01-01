@@ -2,6 +2,8 @@
 
 namespace Models;
 
+use Exception;
+
 class User
 {
     public $user_id;
@@ -94,7 +96,7 @@ class User
         ', $email_pdo_quoted));
 
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-    
+
         if (!empty($row)) {
             $this->instantiateUser($row);
         }
@@ -212,11 +214,39 @@ class User
      *
      * @param array $workout
      *
-     * @return void
+     * @return array
      */
-    public function addWorkout(array $workout): void
+    public function addWorkout(array $workout): array
     {
-        $this->workouts[] = $workout;
+        $row = [];
+        try {
+            $sql = 'INSERT INTO users_workouts (title, movement_name, duration_minutes, description, user_id)
+            VALUES (:title, :movement_name, :duration_minutes, :description, :user_id)';
+    
+            $stmt = $this->db->prepare($sql);
+    
+            $stmt->bindParam(':title', $workout['workout_title'], \PDO::PARAM_STR);
+            $stmt->bindParam(':movement_name', $workout['movements_checked'], \PDO::PARAM_STR);
+            $stmt->bindParam(':duration_minutes', $this->weeksToMinutes($workout['program_length_value']), \PDO::PARAM_INT);
+            $stmt->bindParam(':description', $workout['description_value'], \PDO::PARAM_STR);
+            $stmt->bindParam(':user_id', $this->user_id, \PDO::PARAM_INT);
+    
+            $stmt->execute();
+    
+            // Get workout
+            $row = $this->db->lastInsertId();
+            if (!empty($row)) {
+                $this->workouts[] = $row;
+            }
+        } catch (\Exception $e) {
+            throw new Exception('Error message: ' . $e->getMessage());
+        }
+        return $row;
+    }
+
+    private function weeksToMinutes(int $weeks): int
+    {
+        return $weeks * 7 * 24 * 60;
     }
 
     /**
