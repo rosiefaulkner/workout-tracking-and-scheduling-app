@@ -1,0 +1,30 @@
+
+FROM composer:lts as prod-deps
+WORKDIR /app
+RUN --mount=type=bind,source=./composer.json,target=composer.json \
+    --mount=type=bind,source=./composer.lock,target=composer.lock \
+    --mount=type=cache,target=/tmp/cache \
+    composer install --no-dev --no-interaction
+
+FROM composer:lts as dev-deps
+WORKDIR /app
+RUN --mount=type=bind,source=./composer.json,target=composer.json \
+    --mount=type=bind,source=./composer.lock,target=composer.lock \
+    --mount=type=cache,target=/tmp/cache \
+    composer install --no-interaction
+
+FROM php:8.4-apache as base
+RUN docker-php-ext-install pdo pdo_mysql
+RUN a2enmod rewrite
+RUN sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /etc/apache2/apache2.conf
+RUN sed -i '/<\/VirtualHost>/i\<IfModule mod_rewrite.c>\n    RewriteEngine On\n    RewriteCond %{REQUEST_URI} !^/index\.php\n    RewriteRule ^(.*)$ /index.php/$1 [L,QSA]\n</IfModule>' /etc/apache2/sites-enabled/000-default.conf
+COPY ./src /var/www/html
+
+FROM base as development
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+COPY --from=dev-deps app/vendor/ /var/www/html/vendor
+
+FROM base as final
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY --from=prod-deps app/vendor/ /var/www/html/vendor
+USER www-data

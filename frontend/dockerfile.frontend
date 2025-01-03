@@ -1,0 +1,17 @@
+# Build Stage
+FROM node:lts AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+#development using node lts for local
+FROM node:lts as development
+WORKDIR /app
+COPY --from=base /app .
+ENTRYPOINT ["npm", "start"]
+
+#production
+FROM httpd:2.4.62 as final
+COPY --from=base /app/build/ /usr/local/apache2/htdocs/

@@ -1,0 +1,57 @@
+services:
+  web:
+    build: 
+      context: ./web
+      target: development
+    ports: 
+      - "8081:80"
+    volumes:
+      - ./web/src:/var/www/html
+      - ./web/vendor:/var/www/html/vendor
+      - ./web/.env:/var/www/.env
+  react:
+    build:
+      context: ./frontend
+      target: development
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./frontend:/app
+  db:
+    image: mariadb:latest
+    command: '--default-authentication-plugin=mysql_native_password'
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 --password="$$(cat /run/secrets/db-password)" --silent']
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password
+      - root-password
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MARIADB_DATABASE=workout_app
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/root-password
+      - MARIADB_USER=workout_user
+      - MARIADB_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+     - 3307:3306
+    configs:
+      - source: workout_db
+        target: /docker-entrypoint-initdb.d/workout_db.sql
+        mode: 444
+      
+configs:
+  workout_db:
+    file: sql/workout_db.sql
+
+volumes:
+  db-data:
+
+secrets:
+  db-password:
+    file: sql/password.txt
+  root-password:
+    file: sql/root.txt
