@@ -23,7 +23,7 @@ export default function Description({ setDescriptionhValue = () => {} }) {
             "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
         }}
         value={descriptionValue}
-        label="Description"
+        label="Description "
         minRows={2}
         maxRows={5}
         onValueChange={setDescriptionValue}

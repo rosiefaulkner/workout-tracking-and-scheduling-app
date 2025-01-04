@@ -3,7 +3,6 @@ import { useAsyncList } from "@react-stately/data";
 import {
   DrawerBody,
   Button,
-  useDisclosure,
   Table,
   TableHeader,
   TableColumn,
@@ -77,7 +76,6 @@ function WorkoutRoutine() {
           loadingContent={<Spinner label="Loading..." />}
         >
           {(item) => (
-            console.log("item: ", item),
             (
               <TableRow key={Math.floor(Math.random() * 300)}>
                 {(columnKey) => (

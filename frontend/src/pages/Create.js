@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Alert, Divider, Button } from "@nextui-org/react";
+import { Alert, Button } from "@nextui-org/react";
 import PageLayout from "./layout/PageLayout";
 import MovementsCheckboxes from "../components/workouts/createWorkoutForm/movementsCheckboxes/MovementsCheckboxes";
 import ProgramLength from "../components/workouts/createWorkoutForm/programLength/ProgramLength";
 import Description from "../components/workouts/createWorkoutForm/description/Description";
 import VisibilitySwitch from "../components/workouts/createWorkoutForm/visibility/VisibilitySwitch";
+import SetsRepsForm from "../components/workouts/createWorkoutForm/setsRepsForm/SetsRepsForm";
 import axiosInstance from "../helpers/axiosInstance";
 import { AppContext } from "../AppContext/AppContext";
 
@@ -18,8 +19,11 @@ function Create() {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [visibility, setVisibility] = useState(true);
+  const [sets, setSets] = useState(3);
+  const [reps, setReps] = useState(8);
   const [workoutTitle, setWorkoutTitle] = useState("");
-  const [movementsChecked, setMovementsChecked] = useState(["3/4 Sit-Up"]);
+  const [movementsChecked, setMovementsChecked] = useState([]);
+  const [movementsSetsReps, setMovementsSetsReps] = useState([]);
   const [programLengthValue, setProgramLengthValue] = useState("1");
   const [descriptionValue, setDescriptionhValue] = useState("");
   const [formData, setFormData] = useState({
@@ -31,6 +35,10 @@ function Create() {
     userID: userID,
     userEmail: userEmail,
   });
+
+  useEffect(() => {
+    setMovementsSetsReps(movementsChecked);
+  }, [movementsChecked])
 
   const onSubmit = () => {
     if (
@@ -88,7 +96,13 @@ function Create() {
       programLengthValue,
       descriptionValue,
     });
-  }, [visibility, workoutTitle, movementsChecked, programLengthValue, descriptionValue]);
+  }, [
+    visibility,
+    workoutTitle,
+    movementsChecked,
+    programLengthValue,
+    descriptionValue,
+  ]);
 
   return (
     <PageLayout>
@@ -111,23 +125,36 @@ function Create() {
           />
         </div>
       )}
-        <MovementsCheckboxes
-          setWorkoutTitle={setWorkoutTitle}
-          setMovementsChecked={setMovementsChecked}
-        />
-        <div className="mt-9 max-w-screen-xl">
-      <div className="grid grid-cols-2 gap-4 h-max items-center">
-        <div><VisibilitySwitch setVisibility={setVisibility} /></div>
-        <div><ProgramLength setProgramLengthValue={setProgramLengthValue} /></div>
-      </div>
-    </div>
-        <Description setDescriptionhValue={setDescriptionhValue} />
-        <div className="items-center justify-center">
-          <Button onPress={onSubmit} type="submit" color="primary" className="min-w-56">
-            Submit
-          </Button>
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-9 p-4">
+        <div>
+          <MovementsCheckboxes
+            setWorkoutTitle={setWorkoutTitle}
+            setMovementsChecked={setMovementsChecked}
+          />
         </div>
-      
+        <div>
+          <VisibilitySwitch setVisibility={setVisibility} />
+          <div className="mt-20">
+          <SetsRepsForm movementsSetsReps={movementsSetsReps} setSets={setSets} setReps={setReps} />
+          </div>
+        </div>
+        <div>
+          <Description setDescriptionhValue={setDescriptionhValue} />
+          <div>
+            <ProgramLength setProgramLengthValue={setProgramLengthValue} />
+          </div>
+        </div>
+      </div>
+      <div className="items-center justify-center">
+        <Button
+          onPress={onSubmit}
+          type="submit"
+          color="primary"
+          className="min-w-56"
+        >
+          Submit
+        </Button>
+      </div>
     </PageLayout>
   );
 }

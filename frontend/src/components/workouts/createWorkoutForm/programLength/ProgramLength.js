@@ -30,7 +30,6 @@ export default function ProgramLength({setProgramLengthValue = () => {}}) {
         label="Select program length"
         maxValue={18}
         minValue={1}
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         renderValue={({ children, ...props }) => (
           <output {...props}>
             <Tooltip

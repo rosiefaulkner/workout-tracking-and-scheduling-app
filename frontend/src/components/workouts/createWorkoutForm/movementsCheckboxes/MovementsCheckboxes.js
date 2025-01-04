@@ -35,20 +35,12 @@ export const LazyCheckbox = ({ movement, value }) => {
           <div className="w-full flex justify-between gap-2">
             <div>
               <h3 className="text-lg font-semibold">{movement.name}</h3>
-              {
-                <div>
-                  <div>
-                    <Chip color="primary" variant="light">
-                      Equipment: {movement.equipment || "N/A"}
-                    </Chip>
-                  </div>
-                  <div>
-                    <Chip color="secondary" variant="light">
-                      Level: {movement.level || "N/A"}
-                    </Chip>
-                  </div>
-                </div>
-              }
+              <Chip color="primary" variant="light">
+                Equipment: {movement.equipment || "N/A"}
+              </Chip>
+              <Chip color="secondary" variant="light">
+                Level: {movement.level || "N/A"}
+              </Chip>
             </div>
             <div className="flex flex-col items-end gap-1">
               {movement.primaryMuscles && (
@@ -81,22 +73,13 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
     searchTerm ? item.name.toLowerCase().includes(searchTerm.toLowerCase()) : movementsData.movements
   );
 
-  const handleCheckboxChange = (id) => {
-    setGroupSelected(prev =>
-      prev.includes(id)
-        ? prev.filter(item => item !== id)
-        : [...prev, id]
-    );
-  };
-
-
   useEffect(() => {
     setWorkoutTitle(titleValue);
   }, [titleValue]);
 
   return (
     <>
-      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mb-8 items-start">
+      <div className="flex w-full flex-wrap md:flex-nowrap gap-9 mb-9 items-start">
         <Input
           isRequired
           classNames={{
@@ -106,20 +89,18 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
             inputWrapper:
               "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
-          label="Workout Title"
+          label="Workout Title "
           type="text"
           value={titleValue}
           onValueChange={setTitleValue}
         />
-      </div>
-      <div className="flex flex-col gap-1 w-full">
       <Input
           classNames={{
-            mainWrapper: "h-full pb-0",
+            mainWrapper: "h-full mb-9",
             input:
-              "pb-0 text-md border-transparent focus:border-transparent focus:ring-0",
+              "text-md border-transparent focus:border-transparent focus:ring-0",
             inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20"
           }}
           label="Search"
           type="text"
@@ -133,6 +114,7 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
           <CheckboxGroup
             classNames={{
               base: "w-full mb-6",
+              label: "text-lg",
             }}
             label="Select exercises"
             value={groupSelected}

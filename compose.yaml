@@ -4,7 +4,7 @@ services:
       context: ./web
       target: development
     ports: 
-      - "8081:80"
+      - "8080:80"
     volumes:
       - ./web/src:/var/www/html
       - ./web/vendor:/var/www/html/vendor
@@ -14,7 +14,7 @@ services:
       context: ./frontend
       target: development
     ports:
-      - "3002:3000"
+      - "3000:3000"
     volumes:
       - ./frontend:/app
   db:
@@ -37,7 +37,7 @@ services:
       - MARIADB_USER=workout_user
       - MARIADB_PASSWORD_FILE=/run/secrets/db-password
     ports:
-     - 3307:3306
+     - 3306:3306
     configs:
       - source: workout_db
         target: /docker-entrypoint-initdb.d/workout_db.sql

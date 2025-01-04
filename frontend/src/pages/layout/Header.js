@@ -45,7 +45,7 @@ function Header() {
   const { userData, logout } = useContext(AppContext);
 
   return (
-    <header className="min-w-fit flex items-center justify-between">
+    <header className="min-w-fit flex place-content-between justify-between">
       <Navbar
         classNames={{
           item: [

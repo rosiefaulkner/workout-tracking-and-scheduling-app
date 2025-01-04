@@ -87,6 +87,7 @@ export default function LoginForm() {
         required
         validationBehavior="native"
         errorMessage={errors.email}
+        className="border-transparent focus:border-transparent focus:ring-0"
       />
       <Input
         name="password"
