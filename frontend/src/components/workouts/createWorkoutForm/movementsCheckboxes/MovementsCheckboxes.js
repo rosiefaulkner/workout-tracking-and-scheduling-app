@@ -60,7 +60,7 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
   const [groupSelected, setGroupSelected] = useState([]);
   const [titleValue, setTitleValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  let filteredItems = movementsData;
+  let filteredItems = movementsData.movements;
 
   useEffect(() => {
     if (groupSelected.length < 1) {
@@ -69,9 +69,10 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
     setMovementsChecked(groupSelected);
   }, [groupSelected]);
 
-  filteredItems = movementsData.movements.filter(item =>
-    searchTerm ? item.name.toLowerCase().includes(searchTerm.toLowerCase()) : movementsData.movements
-  );
+  filteredItems = movementsData.movements.filter((item) =>
+    !!searchTerm
+      ? item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      : movementsData.movements);
 
   useEffect(() => {
     setWorkoutTitle(titleValue);
@@ -96,21 +97,23 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
         />
       <Input
           classNames={{
-            mainWrapper: "h-full mb-9",
+            mainWrapper: "h-full pb-0",
             input:
-              "text-md border-transparent focus:border-transparent focus:ring-0",
+              "pb-0 text-md border-transparent focus:border-transparent focus:ring-0",
             inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20"
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
-          label="Search"
+          label="Search..."
           type="text"
-          value={searchTerm}
+          isClearable
+          onClear={() => setSearchTerm(null)}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <ScrollShadow
           orientation="vertical"
           className="w-full max-w-full h-[400px] overflow-y-auto shadow-md"
         >
+          { filteredItems.length > 0 && !searchTerm ?
           <CheckboxGroup
             classNames={{
               base: "w-full mb-6",
@@ -127,7 +130,7 @@ function MovementsCheckboxes({ setWorkoutTitle = () => {},  setMovementsChecked 
                 value={movement.name}
               />
             ))}
-          </CheckboxGroup>
+          </CheckboxGroup> : <h1>Nothing found for you, dawg</h1> }
         </ScrollShadow>
         {groupSelected.length > 0 && (
           <h3 className="text-lg font-semibold mb-8">

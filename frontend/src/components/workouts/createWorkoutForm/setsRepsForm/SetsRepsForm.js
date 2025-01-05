@@ -58,6 +58,7 @@ const SetsRepsForm = ({
                 onChange={(e) =>
                   handleInputChange(exercise.id, "sets", e.target.value)
                 }
+                variant={"underlined"}
                 className="min-w-24"
               />
             </div>
@@ -72,6 +73,7 @@ const SetsRepsForm = ({
                 onChange={(e) =>
                   handleInputChange(exercise.id, "reps", e.target.value)
                 }
+                variant={"underlined"}
                 className="min-w-24"
               />
             </div>
