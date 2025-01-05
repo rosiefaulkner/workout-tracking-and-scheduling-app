@@ -1,14 +1,19 @@
 import React from "react";
 import Header from "./Header";
+import { AppProvider } from "../../AppContext/AppContext";
 
 function PageLayout({ children }) {
   return (
-      <main className="flex min-h-full flex-col">
-        <Header />
-        <div className="m-4 flex grow flex-col gap-4">
-          <div className="justify-center">{children}</div>
+    <AppProvider>
+    <main className="flex min-h-screen flex-col">
+      <Header />
+      <div className="m-4 flex grow flex-col gap-4">
+        <div className="justify-center">
+          {children}
         </div>
-      </main>
+      </div>
+    </main>
+    </AppProvider>
   );
 }
 
