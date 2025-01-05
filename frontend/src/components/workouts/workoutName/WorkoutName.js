@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 
-export default function WorkoutName({ setWorkoutTitle = () => {} }) {
+export default function WorkoutName({ workoutTitle = "", setWorkoutTitle = () => {} }) {
   const [titleValue, setTitleValue] = useState("");
 
   useEffect(() => {
@@ -21,8 +21,9 @@ export default function WorkoutName({ setWorkoutTitle = () => {} }) {
         }}
         label="Workout Title "
         type="text"
-        value={titleValue}
+        value={workoutTitle}
         onValueChange={setTitleValue}
+        validationBehavior="native"
       />
     </div>
   );

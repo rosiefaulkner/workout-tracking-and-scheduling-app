@@ -118,14 +118,6 @@ function MovementsCheckboxes({ setMovementsChecked = () => {} }) {
             <h1>Nothing found for you, dawg</h1>
           )}
         </ScrollShadow>
-        {groupSelected.length > 0 && (
-          <h3 className="text-lg font-semibold mb-8">
-            Selected:{" "}
-            <span className="mt-4 ml-1 text-default-500">
-              {groupSelected.join(", ")}
-            </span>
-          </h3>
-        )}
       </div>
     </>
   );

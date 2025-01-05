@@ -253,14 +253,14 @@ class User
     }
 
     /**
-     * Add workout
+     * Create workout
      * TODO: ADD TO WORKOUT CONTROLLER/MODEL
      *
      * @param array $workout
      *
      * @return array response
      */
-    public function addWorkout(array $workout): array
+    public function createWorkout(array $workout): array
     {
         $workout_title = $workout['workout_title'];
         $duration_minutes = $this->weeksToMinutes((int) $workout['program_length_value']);

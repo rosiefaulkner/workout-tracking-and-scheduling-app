@@ -51,6 +51,7 @@ const SetsRepsForm = ({
               </div>
               <Input
                 type="number"
+                color="primary"
                 min={1}
                 max={250}
                 label="Sets"

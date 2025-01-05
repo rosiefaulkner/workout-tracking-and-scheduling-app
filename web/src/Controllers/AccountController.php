@@ -62,7 +62,7 @@ class AccountController extends Controller
      *
      * @return void
      */
-    public function addWorkout(): void
+    public function createWorkout(): void
     {
         $form_data = (array) json_decode(file_get_contents('php://input'), TRUE);
         $workout_title = trim($form_data['workoutTitle']) ?? null;
@@ -73,7 +73,7 @@ class AccountController extends Controller
         $user_id = $form_data['userID'];
         $workout = compact('user_id', 'email', 'workout_title', 'movements_checked', 'program_length_value', 'description_value');
         $userModel = new User($this->db);
-        $response = (array) $userModel->addWorkout($workout);
+        $response = (array) $userModel->createWorkout($workout);
         echo json_encode($response);
     }
 }

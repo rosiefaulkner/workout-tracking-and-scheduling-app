@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Alert, Button } from "@nextui-org/react";
 import PageLayout from "./layout/PageLayout";
 import MovementsCheckboxes from "../components/workouts/createWorkoutForm/movementsCheckboxes/MovementsCheckboxes";
@@ -12,11 +12,9 @@ import WorkoutName from "../components/workouts/workoutName/WorkoutName";
 
 function Create() {
   const { userData } = useContext(AppContext);
-  const userInfo = userData;
-  const userID = userInfo?.user_id;
-  const userEmail = userInfo?.email;
+  const userID = userData?.user_id;
+  const userEmail = userData?.email;
   const [currentStep, setCurrentStep] = useState(1);
-  const [isValid, setIsValid] = useState(true);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [visibility, setVisibility] = useState(true);
@@ -25,117 +23,83 @@ function Create() {
   const [movementsSetsReps, setMovementsSetsReps] = useState([]);
   const [programLengthValue, setProgramLengthValue] = useState("1");
   const [descriptionValue, setDescriptionValue] = useState("");
-  const [formData, setFormData] = useState({
-    visibility: visibility,
-    workoutTitle: workoutTitle,
-    movementsChecked: movementsChecked,
-    movementsSetsReps: movementsSetsReps,
-    programLengthValue: programLengthValue,
-    descriptionValue: descriptionValue,
-    userID: userID,
-    userEmail: userEmail,
-  });
 
-  const steps = ["Workout name", "Choose exercises", "Preferences"];
-  const progressWidth = `${(currentStep / steps.length) * 100}%`;
-  const validateStep = () => {
-    return (
-      formData.workoutTitle &&
-      formData.movementsChecked.length > 0 &&
-      formData.programLengthValue &&
-      formData.descriptionValue &&
-      formData.movementsSetsReps.length === formData.movementsChecked.length
-    );
-  };
+  const formRef = useRef(null);
 
-  const onSubmit = () => {
-    if (
-      !formData.visibility ||
-      !formData.workoutTitle ||
-      formData.movementsChecked.length < 1 ||
-      !formData.programLengthValue ||
-      !formData.descriptionValue ||
-      formData.movementsSetsReps.length !== formData.movementsChecked.length
-    ) {
-      return;
-    }
-
-    try {
-      axiosInstance.post("/account/add-workout", formData).then((response) => {
-        if (
-          !response ||
-          response?.status !== 200 ||
-          response?.data?.status !== "success"
-        ) {
-          if (response?.message) {
-            setErrorMessage(response.message);
-          } else {
-            setErrorMessage(
-              "Oops! Something is missing. Double check your workout details and try again."
-            );
-          }
-        } else {
-          setErrorMessage(null);
-          setIsValid(true);
-          setIsSuccessful(true);
-        }
-      });
-    } catch (error) {
-      setErrorMessage(
-        "Whoops, something went wrong. Please come back later and try again."
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (isSuccessful) {
-      setIsSuccessful(false);
-    }
-    if (!isValid) {
-      setIsValid(true);
-    }
-    if (errorMessage) {
-      setErrorMessage(null);
-    }
-    setFormData({
-      ...formData,
-      visibility,
-      workoutTitle,
-      movementsChecked,
-      movementsSetsReps,
-      programLengthValue,
-      descriptionValue,
-    });
-  }, [
+  const formData = {
     visibility,
     workoutTitle,
     movementsChecked,
     movementsSetsReps,
     programLengthValue,
     descriptionValue,
-  ]);
+    userID,
+    userEmail,
+  };
+
+  const steps = ["Workout name", "Choose exercises", "Preferences"];
+  const progressWidth = `${(currentStep / steps.length) * 100}%`;
+
+  const validateMovements = () => {
+    if (movementsChecked.length === 0) {
+      setErrorMessage("Please select at least one exercise.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (
+      formRef.current.checkValidity() &&
+      (currentStep !== 2 || validateMovements())
+    ) {
+      setErrorMessage(null);
+      setCurrentStep((prev) => prev + 1);
+    } else {
+      formRef.current.reportValidity();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!formRef.current.checkValidity() || !validateMovements()) {
+      formRef.current.reportValidity();
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.post(
+        "/account/create-workout",
+        formData
+      );
+      if (response?.status === 200 && response?.data?.status === "success") {
+        setErrorMessage(null);
+        setIsSuccessful(true);
+      } else {
+        setErrorMessage(response?.message || "Error adding workout.");
+      }
+    } catch (error) {
+      setErrorMessage("Something went wrong. Please try again later.");
+    }
+  };
+
+  useEffect(() => {
+    setErrorMessage(null);
+    setIsSuccessful(false);
+  }, [currentStep]);
 
   return (
     <PageLayout>
-      {(!isValid || errorMessage) && (
+      {errorMessage && (
         <div className="w-full flex items-center my-3 rounded-medium">
-          <Alert
-            color="danger"
-            title={
-              errorMessage ||
-              "Oops! Something is missing. Double check your workout details and try again."
-            }
-          />
+          <Alert color="danger" title={errorMessage} />
         </div>
       )}
       {isSuccessful && (
         <div className="w-full flex items-center my-3 rounded-medium">
-          <Alert
-            color="success"
-            title={"Hurray! Workout successfully added!"}
-          />
+          <Alert color="success" title="Workout successfully added!" />
         </div>
       )}
+
       {/* Progress Bar */}
       <div className="mb-8">
         <div className="flex justify-between mb-2">
@@ -144,78 +108,91 @@ function Create() {
               key={index}
               className={`text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full ${
                 index < currentStep
-                  ? "text-green-600 bg-green-200"
-                  : "text-green-600 bg-green-200 opacity-50"
+                  ? "text-primary-600 bg-primary-200"
+                  : "text-primary-600 bg-primary-200 opacity-50"
               }`}
             >
               {step}
             </span>
           ))}
         </div>
-        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-200">
+        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-primary-200">
           <div
             style={{ width: progressWidth }}
-            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-500 ease-in-out"
+            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary-500 transition-all duration-500 ease-in-out"
           ></div>
         </div>
       </div>
-      {/* Step 1 */}
-      {currentStep === 1 && (
-        <div>
-          <WorkoutName setWorkoutTitle={setWorkoutTitle} />
-          <Description setDescriptionValue={setDescriptionValue} />
-        </div>
-      )}
 
-      {/* Step 2 */}
-      {currentStep === 2 && (
-        <div className="gap-9 p-4">
-          <div
-            className={
-              movementsChecked.length > 0 && "grid grid-cols-2 md:grid-cols-2"
-            }
-          >
-            <MovementsCheckboxes setMovementsChecked={setMovementsChecked} />
-            <SetsRepsForm
-              movementsSetsReps={movementsChecked}
-              setMovementsSetsReps={setMovementsSetsReps}
+      <form ref={formRef}>
+        {/* Step 1 */}
+        {currentStep === 1 && (
+          <div>
+            <WorkoutName
+              workoutTitle={workoutTitle}
+              setWorkoutTitle={setWorkoutTitle}
+              required
+            />
+            <Description
+              descriptionValue={descriptionValue}
+              setDescriptionValue={setDescriptionValue}
+              required
             />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Step 3 */}
-      {currentStep === 3 && (
-        <div>
-          <VisibilitySwitch setVisibility={setVisibility} />
-          <ProgramLength setProgramLengthValue={setProgramLengthValue} />
-          <div className="items-center justify-center">
-            <Button
-              onPress={onSubmit}
-              type="submit"
-              color="primary"
-              className="min-w-56"
+        {/* Step 2 */}
+        {currentStep === 2 && (
+          <div className="gap-9 p-4">
+            <div
+              className={
+                movementsChecked.length > 0 && "grid grid-cols-2 md:grid-cols-2"
+              }
             >
-              Submit
-            </Button>
+              <MovementsCheckboxes
+                movementsChecked={movementsChecked}
+                setMovementsChecked={setMovementsChecked}
+              />
+              <SetsRepsForm
+                movementsSetsReps={movementsChecked}
+                setMovementsSetsReps={setMovementsSetsReps}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Step 3 */}
+        {currentStep === 3 && (
+          <div className="grid grid-cols-2 md:grid-cols-2">
+            <VisibilitySwitch setVisibility={setVisibility} />
+            <ProgramLength setProgramLengthValue={setProgramLengthValue} />
+          </div>
+        )}
+      </form>
+
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-8">
         <Button
-          onPress={() => setCurrentStep(currentStep - 1)}
+          onPress={() => setCurrentStep((prev) => prev - 1)}
           className={`px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 ${
             currentStep === 1 ? "hidden" : ""
           }`}
         >
           Previous
         </Button>
-        {currentStep < steps.length && (
+        {currentStep < steps.length ? (
           <Button
-            onPress={() => setCurrentStep(currentStep + 1)}
-            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            onPress={handleNext}
+            className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
           >
             Next
+          </Button>
+        ) : (
+          <Button
+            onPress={handleSubmit}
+            className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+          >
+            Submit
           </Button>
         )}
       </div>
