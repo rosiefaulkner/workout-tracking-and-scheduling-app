@@ -66,22 +66,6 @@ CREATE TABLE movements (
   INDEX (movement_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE workouts_movements (
-    workouts_movements_id INT AUTO_INCREMENT PRIMARY KEY,
-    movement_id INT NOT NULL,
-    equipment_id INT NOT NULL,
-    workout_id INT NOT NULL,         
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    INDEX (movement_id, equipment_id, workout_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE users_workouts (
     users_workouts_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -101,4 +85,19 @@ CREATE TABLE users_workouts (
         ON UPDATE CASCADE,
     INDEX (workout_id),
     INDEX (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE workouts_movements (
+    workouts_movements_id INT AUTO_INCREMENT PRIMARY KEY,
+    movement_id INT NOT NULL,
+    workout_id INT NOT NULL,         
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (movement_id) REFERENCES movements(movement_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (workout_id) REFERENCES workouts(workout_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    INDEX (movement_id, workout_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

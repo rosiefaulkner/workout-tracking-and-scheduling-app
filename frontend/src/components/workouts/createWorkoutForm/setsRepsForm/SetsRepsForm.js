@@ -3,33 +3,28 @@ import { Input } from "@nextui-org/react";
 
 const SetsRepsForm = ({
   movementsSetsReps = [],
-  setSets = () => {},
-  setReps = () => {},
+  setMovementsSetsReps = () => {},
 }) => {
   const [exercises, setExercises] = useState([]);
 
-  // Initialize exercises when movementsSetsReps changes
+  /**
+   * Initialize exercises when movementsSetsReps changes
+   */
   useEffect(() => {
     const initialExercises = movementsSetsReps.length > 0 
       ? movementsSetsReps.map((movement, index) => ({
-          id: index + 2, // Unique ID
-          name: movement, // Name as a string
-          sets: "", // Default empty value for sets
-          reps: "", // Default empty value for reps
+          id: index + 1,
+          name: movement,
+          sets: "3",
+          reps: "8",
         }))
       : [];
     setExercises(initialExercises);
   }, [movementsSetsReps]);
 
-  // Update aggregated sets and reps whenever exercises change
-  useEffect(() => {
-    const totalSets = exercises.reduce((acc, ex) => acc + (Number(ex.sets) || 0), 0);
-    const totalReps = exercises.reduce((acc, ex) => acc + (Number(ex.reps) || 0), 0);
-    setSets(totalSets);
-    setReps(totalReps);
-  }, [exercises, setSets, setReps]);
-
-  // Handle input changes for sets and reps
+  /**
+   * Handle input changes for sets and reps
+   */
   const handleInputChange = (id, field, value) => {
     setExercises((prevExercises) =>
       prevExercises.map((exercise) =>
@@ -37,6 +32,10 @@ const SetsRepsForm = ({
       )
     );
   };
+
+  useEffect(() => {
+    setMovementsSetsReps(exercises);
+  }, [exercises]);
 
   return (
     <ul>

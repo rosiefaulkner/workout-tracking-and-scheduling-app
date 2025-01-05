@@ -19,26 +19,21 @@ function Create() {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [visibility, setVisibility] = useState(true);
-  const [sets, setSets] = useState(3);
-  const [reps, setReps] = useState(8);
   const [workoutTitle, setWorkoutTitle] = useState("");
   const [movementsChecked, setMovementsChecked] = useState([]);
   const [movementsSetsReps, setMovementsSetsReps] = useState([]);
   const [programLengthValue, setProgramLengthValue] = useState("1");
-  const [descriptionValue, setDescriptionhValue] = useState("");
+  const [descriptionValue, setDescriptionValue] = useState("");
   const [formData, setFormData] = useState({
     visibility: visibility,
     workoutTitle: workoutTitle,
     movementsChecked: movementsChecked,
+    movementsSetsReps: movementsSetsReps,
     programLengthValue: programLengthValue,
     descriptionValue: descriptionValue,
     userID: userID,
     userEmail: userEmail,
   });
-
-  useEffect(() => {
-    setMovementsSetsReps(movementsChecked);
-  }, [movementsChecked])
 
   const onSubmit = () => {
     if (
@@ -46,7 +41,8 @@ function Create() {
       !formData.workoutTitle ||
       formData.movementsChecked.length < 1 ||
       !formData.programLengthValue ||
-      !formData.descriptionValue
+      !formData.descriptionValue ||
+      formData.movementsSetsReps.length !== formData.movementsChecked.length
     ) {
       return;
     }
@@ -93,6 +89,7 @@ function Create() {
       visibility,
       workoutTitle,
       movementsChecked,
+      movementsSetsReps,
       programLengthValue,
       descriptionValue,
     });
@@ -100,6 +97,7 @@ function Create() {
     visibility,
     workoutTitle,
     movementsChecked,
+    movementsSetsReps,
     programLengthValue,
     descriptionValue,
   ]);
@@ -135,11 +133,14 @@ function Create() {
         <div>
           <VisibilitySwitch setVisibility={setVisibility} />
           <div className="mt-20">
-          <SetsRepsForm movementsSetsReps={movementsSetsReps} setSets={setSets} setReps={setReps} />
+            <SetsRepsForm
+              movementsSetsReps={movementsChecked}
+              setMovementsSetsReps={setMovementsSetsReps}
+            />
           </div>
         </div>
         <div>
-          <Description setDescriptionhValue={setDescriptionhValue} />
+          <Description setDescriptionValue={setDescriptionValue} />
           <div>
             <ProgramLength setProgramLengthValue={setProgramLengthValue} />
           </div>
