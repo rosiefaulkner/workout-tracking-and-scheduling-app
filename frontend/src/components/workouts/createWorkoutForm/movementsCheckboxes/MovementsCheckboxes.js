@@ -89,7 +89,6 @@ function MovementsCheckboxes({ setMovementsChecked = () => {} }) {
   }, [groupSelected]);
 
   useEffect(() => {
-
     const getAllMovementsData = async () => {
       await getMovements().then((resp) => {
         setAllMovements(resp);
