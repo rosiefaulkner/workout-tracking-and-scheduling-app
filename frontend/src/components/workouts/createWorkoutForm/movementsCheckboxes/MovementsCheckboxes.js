@@ -8,8 +8,24 @@ import {
   cn,
 } from "@nextui-org/react";
 import { useInView } from "react-intersection-observer";
-import movementsData from "../../../../api/movements/movements.json";
 import { SearchIcon } from "../../../../assets/SearchIcon";
+import axiosInstance from "../../../../helpers/axiosInstance";
+
+export const getMovements = async() => {
+  try {
+    const response = await axiosInstance.get("/account/get-movements");
+    if (
+      !response ||
+      response?.status !== 200
+    ) {
+      console.error({ message: "Unable to fetch movements" });
+    } else {
+      return response?.data?.exercises;
+    }
+  } catch (error) {
+    console.error({ message: "Failed to fetch movements", error });
+  }
+}
 
 export const LazyCheckbox = ({ movement, value }) => {
   const { ref, inView } = useInView({
@@ -33,20 +49,26 @@ export const LazyCheckbox = ({ movement, value }) => {
           }}
           value={value}
         >
-          <div className="w-full flex justify-between gap-2">
+          <div className="w-full flex justify-between gap-2 overflow-x-scroll">
             <div>
               <h3 className="text-lg font-semibold">{movement.name}</h3>
               <Chip color="primary" variant="light">
                 Equipment: {movement.equipment || "N/A"}
               </Chip>
-              <Chip color="secondary" variant="light">
+              <Chip color="danger" variant="light">
                 Level: {movement.level || "N/A"}
               </Chip>
+              <Chip color="success" variant="light">
+                Category: {movement.category || "N/A"}
+              </Chip>
+              {movement.secondary_muscles?.length > 0 && <Chip color="secondary" variant="light">
+                Muscles: {movement.primary_muscles + ", " + movement.secondary_muscles}
+              </Chip>}
             </div>
             <div className="flex flex-col items-end gap-1">
-              {movement.primaryMuscles && (
+              {movement.primary_muscles && (
                 <Chip color="warning" size="md" variant="flat">
-                  {movement.primaryMuscles}
+                  {movement.primary_muscles}
                 </Chip>
               )}
             </div>
@@ -60,16 +82,27 @@ export const LazyCheckbox = ({ movement, value }) => {
 function MovementsCheckboxes({ setMovementsChecked = () => {} }) {
   const [groupSelected, setGroupSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  let filteredItems = movementsData.movements;
+  const [allMovements, setAllMovements] = useState([]);
 
   useEffect(() => {
     setMovementsChecked(groupSelected);
   }, [groupSelected]);
 
-  filteredItems = movementsData.movements.filter((item) =>
+  useEffect(() => {
+
+    const getAllMovementsData = async () => {
+      await getMovements().then((resp) => {
+        setAllMovements(resp);
+      })
+    }
+    getAllMovementsData();
+  }, []);
+
+  let filteredItems = allMovements;
+  filteredItems = allMovements.filter((item) =>
     !!searchTerm
       ? item.name.toLowerCase().includes(searchTerm.toLowerCase())
-      : movementsData.movements
+      : allMovements
   );
 
   return (
