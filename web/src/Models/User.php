@@ -303,6 +303,7 @@ class User
             $resp = array_merge($row, [
                 'status' => 'success',
                 'message' => 'Workout added',
+                'workout_id' => $lastInsertId
             ]);
         } catch (Exception $e) {
             $resp = [
@@ -350,7 +351,7 @@ class User
             'created_by_user_id' => $this->user_id ?? 17,
             'description' => $workout['description_value'],
         ];
-        $workout_id = $this->addWorkout($workout_details);
+        $workout_id = $this->createWorkout($workout_details);
         $row = [];
         foreach ($workout['movements_checked'] as $movement) {
             $movement_id = $this->getMovementIDByName($movement);

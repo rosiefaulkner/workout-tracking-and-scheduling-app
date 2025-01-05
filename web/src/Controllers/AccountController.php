@@ -5,6 +5,7 @@ namespace Controllers;
 use Libraries\Controller;
 use Models\Account;
 use Models\User;
+use Models\Workout;
 
 class AccountController extends Controller
 {
@@ -73,7 +74,23 @@ class AccountController extends Controller
         $user_id = $form_data['userID'];
         $workout = compact('user_id', 'email', 'workout_title', 'movements_checked', 'program_length_value', 'description_value');
         $userModel = new User($this->db);
-        $response = (array) $userModel->createWorkout($workout);
+        $create_workout_response = (array) $userModel->createWorkout($workout);
+        $workout_id = $create_workout_response['workout_id'];
+        // Add workout to workouts_movements table
+        $movements_sets_reps = $form_data['movementsSetsReps'];
+        $workout_model = new Workout($this->db);
+        $response = '';
+        if (!empty($create_workout_response)) {
+            $add_movements_to_workout_response = (array) $workout_model->addWorkoutMovements($workout_id, $movements_sets_reps);
+            $response = array_merge($create_workout_response, $add_movements_to_workout_response);
+        }
         echo json_encode($response);
+    }
+
+    public function getMovements(): void
+    {
+        $workout_model = new Workout($this->db);
+        $movements_response = $workout_model->getAllMovements();
+        echo json_encode($movements_response);
     }
 }

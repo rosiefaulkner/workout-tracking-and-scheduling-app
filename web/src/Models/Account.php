@@ -3,7 +3,6 @@
 namespace Models;
 
 use Exception;
-use Controllers\LoginController;
 use Models\User;
 
 class Account
