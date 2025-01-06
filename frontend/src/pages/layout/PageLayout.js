@@ -8,7 +8,7 @@ function PageLayout({ children }) {
     <main className="flex min-h-screen flex-col">
       <Header />
       <div className="m-4 flex grow flex-col gap-4">
-        <div className="justify-center">
+        <div className="justify-center pt-7">
           {children}
         </div>
       </div>

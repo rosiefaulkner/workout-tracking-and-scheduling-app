@@ -87,14 +87,18 @@ class Workout
     {
         foreach ($movements_sets_reps as $movement) {
             $movement_id = $this->getMovementIDByName($movement['name']);
+            $sets = (int) $movement['sets'];
+            $reps = (int) $movement['reps'];
             try {
-                $sql = 'INSERT INTO workouts_movements (workout_id, movement_id)
-                VALUES (:workout_id, :movement_id)';
+                $sql = 'INSERT INTO workouts_movements (workout_id, movement_id, sets, reps)
+                VALUES (:workout_id, :movement_id, :sets, :reps)';
                 
                 $stmt = $this->db->prepare($sql);
     
                 $stmt->bindParam(':movement_id', $movement_id, \PDO::PARAM_INT);
                 $stmt->bindParam(':workout_id', $workout_id, \PDO::PARAM_INT);
+                $stmt->bindParam(':sets', $sets, \PDO::PARAM_INT);
+                $stmt->bindParam(':reps', $reps, \PDO::PARAM_INT);
     
                 $stmt->execute();
     

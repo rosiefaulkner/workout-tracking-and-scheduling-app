@@ -278,14 +278,15 @@ class User
         $this->instantiateUser();
         $resp = [];
         try {
-            $sql = 'INSERT INTO workouts (workout_title, duration_minutes, created_by_user_id, description)
-            VALUES (:workout_title, :duration_minutes, :created_by_user_id, :description)';
+            $sql = 'INSERT INTO workouts (workout_title, duration_minutes, created_by_user_id, description, visibility)
+            VALUES (:workout_title, :duration_minutes, :created_by_user_id, :description, :visibility)';
             $stmt = $this->db->prepare($sql);
 
             $stmt->bindParam(':workout_title', $workout_title, \PDO::PARAM_STR);
             $stmt->bindParam(':duration_minutes', $duration_minutes, \PDO::PARAM_INT);
             $stmt->bindParam(':created_by_user_id', $this->user_id, \PDO::PARAM_INT);
             $stmt->bindParam(':description', $workout['description_value'], \PDO::PARAM_STR);
+            $stmt->bindParam(':visibility', $workout['visibility'], \PDO::PARAM_BOOL);
 
             $stmt->execute();
 

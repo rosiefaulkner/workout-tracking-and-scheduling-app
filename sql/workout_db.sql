@@ -36,7 +36,7 @@ CREATE TABLE workouts (
     workout_id INT AUTO_INCREMENT PRIMARY KEY,
     workout_title VARCHAR(255) NOT NULL,
     workout_type VARCHAR(50) DEFAULT NULL,      
-    duration_minutes INT DEFAULT NULL,             
+    duration_minutes INT DEFAULT NULL,
     intensity ENUM('low', 'medium', 'high') DEFAULT NULL,
     created_by_user_id INT DEFAULT NULL,       
     description TEXT,
@@ -90,7 +90,9 @@ CREATE TABLE users_workouts (
 CREATE TABLE workouts_movements (
     workouts_movements_id INT AUTO_INCREMENT PRIMARY KEY,
     movement_id INT NOT NULL,
-    workout_id INT NOT NULL,         
+    workout_id INT NOT NULL,
+    sets INT DEFAULT NULL,
+    reps INT DEFAULT NULL,         
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (movement_id) REFERENCES movements(movement_id)
