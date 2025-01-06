@@ -11,18 +11,20 @@ function NavMenu() {
   const { pathname } = location;
 
   return (
-    <NavbarContent className="hidden sm:flex gap-3">
+    <NavbarContent className="flex gap-4 ">
       <NavbarItem data-active={pathname === "/account/my-program"}>
         <Link
           href="/account/my-program"
+          underline="none"
           color={pathname === "/account/my-program" ? "primary" : "foreground"}
         >
-          My Program
+          Train
         </Link>
       </NavbarItem>
       <NavbarItem data-active={pathname === "/account"}>
         <Link
           href="/account"
+          underline="none"
           color={pathname === "/account" ? "primary" : "foreground"}
         >
           Discover
@@ -31,6 +33,7 @@ function NavMenu() {
       <NavbarItem data-active={pathname === "/workout/create"}>
         <Link
           href="/workout/create"
+          underline="none"
           color={pathname === "/workout/create" ? "primary" : "foreground"}
         >
           Create

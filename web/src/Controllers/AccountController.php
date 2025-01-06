@@ -66,13 +66,14 @@ class AccountController extends Controller
     public function createWorkout(): void
     {
         $form_data = (array) json_decode(file_get_contents('php://input'), TRUE);
-        $workout_title = trim($form_data['workoutTitle']) ?? null;
+        $workout_title = trim($form_data['workoutTitle']) ?: null;
         $movements_checked = is_array($form_data['movementsChecked']) && !empty($form_data['movementsChecked']) ? $form_data['movementsChecked'] : [];
         $program_length_value = $form_data['programLengthValue'] ? (int) $form_data['programLengthValue'] : 1;
-        $description_value = trim($form_data['descriptionValue']) ?? null;
+        $description_value = trim($form_data['descriptionValue']) ?: null;
+        $visibility = (bool) $form_data['visibility'];
         $email = $form_data['userEmail'];
         $user_id = $form_data['userID'];
-        $workout = compact('user_id', 'email', 'workout_title', 'movements_checked', 'program_length_value', 'description_value');
+        $workout = compact('user_id', 'email', 'workout_title', 'movements_checked', 'program_length_value', 'description_value', 'visibility');
         $userModel = new User($this->db);
         $create_workout_response = (array) $userModel->createWorkout($workout);
         $workout_id = $create_workout_response['workout_id'];
