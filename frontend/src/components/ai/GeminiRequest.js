@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Progress } from "@nextui-org/react";
+import { Progress } from "@heroui/react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 function GeminiRequest() {
@@ -9,7 +9,7 @@ function GeminiRequest() {
   useEffect(() => {
     const fetchAIResponse = async () => {
       const genAI = new GoogleGenerativeAI(
-        "API_KEY"
+        "AIzaSyBXY4U2tn09iHJ_q9iWKrWd_6rFoAL-ahc"
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 

@@ -6,7 +6,7 @@ import {
   CardHeader,
   Divider,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import AIIcon from "../assets/AIIcon";
 
 function Generate() {

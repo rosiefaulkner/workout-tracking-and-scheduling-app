@@ -1,5 +1,5 @@
 import React from "react";
-import { DrawerBody } from "@nextui-org/react";
+import { DrawerBody } from "@heroui/react";
 import { workoutOverview } from "../../../helpers/dummyData"; // Remove after adding endpoint
 
 function Overview() {

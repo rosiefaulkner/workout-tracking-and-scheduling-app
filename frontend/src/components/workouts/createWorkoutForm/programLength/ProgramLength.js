@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Slider, Tooltip } from "@nextui-org/react";
+import { Slider, Tooltip } from "@heroui/react";
 
 export default function ProgramLength({setProgramLengthValue = () => {}}) {
   const [value, setValue] = useState(1);

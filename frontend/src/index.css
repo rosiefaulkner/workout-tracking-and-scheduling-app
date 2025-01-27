@@ -411,6 +411,10 @@ Correct the cursor style of increment and decrement buttons in Safari.
   box-shadow: none;
 }
 
+.no-undlerline {
+  text-decoration: none !important;
+}
+
 /*
 Remove the inner padding in Chrome and Safari on macOS.
 */

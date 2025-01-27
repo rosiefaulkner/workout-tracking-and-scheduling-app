@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { TrophyIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 

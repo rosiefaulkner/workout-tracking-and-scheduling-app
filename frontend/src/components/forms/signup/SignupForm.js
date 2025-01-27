@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Alert, Form, Input, Button} from "@nextui-org/react";
+import {Alert, Form, Input, Button} from "@heroui/react";
 import axiosInstance from "../../../helpers/axiosInstance";
 import { useNavigate } from "react-router-dom";
 

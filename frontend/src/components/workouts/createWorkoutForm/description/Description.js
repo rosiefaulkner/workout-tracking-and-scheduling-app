@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Textarea } from "@nextui-org/react";
+import { Textarea } from "@heroui/react";
 
 export default function Description({ descriptionValue = "", setDescriptionValue = () => {} }) {
   const [description, setDescription] = useState("");
