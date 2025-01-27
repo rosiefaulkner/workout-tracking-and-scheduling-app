@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 
 export default function WorkoutName({ workoutTitle = "", setWorkoutTitle = () => {} }) {
   const [titleValue, setTitleValue] = useState("");

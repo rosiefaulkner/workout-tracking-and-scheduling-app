@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, cn } from "@nextui-org/react";
+import { Switch, cn } from "@heroui/react";
 
 export default function VisibilitySwitch({ setVisibility = () => {} }) {
   return (

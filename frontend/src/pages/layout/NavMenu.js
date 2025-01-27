@@ -4,19 +4,20 @@ import {
   NavbarContent,
   NavbarItem,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 function NavMenu() {
   const location = useLocation();
   const { pathname } = location;
 
   return (
-    <NavbarContent className="flex gap-4 ">
+    <NavbarContent className="flex gap-4">
       <NavbarItem data-active={pathname === "/account/my-program"}>
         <Link
           href="/account/my-program"
           underline="none"
           color={pathname === "/account/my-program" ? "primary" : "foreground"}
+          className="no-undlerline"
         >
           Train
         </Link>
@@ -26,6 +27,7 @@ function NavMenu() {
           href="/account"
           underline="none"
           color={pathname === "/account" ? "primary" : "foreground"}
+          className="no-undlerline"
         >
           Discover
         </Link>
@@ -35,6 +37,7 @@ function NavMenu() {
           href="/workout/create"
           underline="none"
           color={pathname === "/workout/create" ? "primary" : "foreground"}
+          className="no-undlerline"
         >
           Create
         </Link>

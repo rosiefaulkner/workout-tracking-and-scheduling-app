@@ -6,7 +6,7 @@ import {
   ScrollShadow,
   Chip,
   cn,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useInView } from "react-intersection-observer";
 import { SearchIcon } from "../../../../assets/SearchIcon";
 import axiosInstance from "../../../../helpers/axiosInstance";

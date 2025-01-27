@@ -16,7 +16,7 @@ import {
   useDisclosure,
   Tabs,
   Tab,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { workoutOverview, workoutSchedule } from "../helpers/dummyData";
 
 function Account() {

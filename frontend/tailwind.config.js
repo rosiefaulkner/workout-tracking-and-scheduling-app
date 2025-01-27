@@ -1,16 +1,16 @@
-const { nextui } = require("@nextui-org/react");
+const { heroui } = require("@heroui/react");
 
 module.exports = {
   content: [
-    "./node_modules/@nextui-org/theme/dist/**.{js,ts,jsx,tsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(form|select|selectitem|checkbox|button|snippet|code|input).js",
+    "./node_modules/@heroui/theme/dist/**.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/components/(form|select|selectitem|checkbox|button|snippet|code|input).js",
     "./src/**.{js,ts,jsx,tsx}",
     "./src/pages/**.{js,ts,jsx,tsx}",
     "./src/components/**.{js,ts,jsx,tsx}",
     "./src/pages/*.js",
     "./src/components/*.js",
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/@nextui-org/react/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/react/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -24,7 +24,7 @@ module.exports = {
   darkMode: "class", // Enable dark mode based on a class
   plugins: [
     require("@tailwindcss/forms"),
-    nextui({
+    heroui({
       layout: {
         dividerWeight: "1px", // h-divider the default height applied to the divider component
         disabledOpacity: 0.5, // this value is applied as opacity-[value] when the component is disabled

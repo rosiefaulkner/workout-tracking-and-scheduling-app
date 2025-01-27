@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import LoginForm from "../components/forms/login/LoginForm";
 import SignupForm from "../components/forms/signup/SignupForm";
 
@@ -17,7 +17,7 @@ export default function Login() {
                 >
                   <Tab key="login" title="Login">
                     <LoginForm />
-                  </Tab>hvgkjhgjkhg
+                  </Tab>
                   <Tab key="signup" title="Sign Up">
                     <SignupForm />
                   </Tab>

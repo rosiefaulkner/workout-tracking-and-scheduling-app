@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Alert, Button } from "@nextui-org/react";
+import { Alert, Button } from "@heroui/react";
 import PageLayout from "./layout/PageLayout";
 import MovementsCheckboxes from "../components/workouts/createWorkoutForm/movementsCheckboxes/MovementsCheckboxes";
 import ProgramLength from "../components/workouts/createWorkoutForm/programLength/ProgramLength";

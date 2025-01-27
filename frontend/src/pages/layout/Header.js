@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import LiftLogo from "../../assets/LiftLogo";
-import { Navbar, NavbarBrand, NavbarContent, Input } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, Input } from "@heroui/react";
 import UserMenu from "./UserMenu";
 import NavMenu from "./NavMenu";
 import { AppContext } from "../../AppContext/AppContext";
