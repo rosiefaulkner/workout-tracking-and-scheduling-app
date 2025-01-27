@@ -3,7 +3,6 @@ import PageLayout from "./layout/PageLayout";
 import ActivityFeed from "../components/activity-feed/AcivityFeed";
 import {
   Card,
-  Button,
   Calendar,
 } from "@heroui/react";
 import { today, getLocalTimeZone, isWeekend } from "@internationalized/date";

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import MyProgram from './pages/MyProgram';
 import Create from './pages/Create';
 import NotFound from './pages/NotFound';
+import CustomRoutine from './pages/CustomRoutine';
 
 const AppRoutes = () => (
   <Router>
@@ -16,6 +17,7 @@ const AppRoutes = () => (
       <Route path="/account" element={<Account />} />
       <Route path="/account/my-program" element={<MyProgram />} />
       <Route path="/workout/create" element={<Create />} />
+      <Route path="/workout/custom-routine" element={<CustomRoutine />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

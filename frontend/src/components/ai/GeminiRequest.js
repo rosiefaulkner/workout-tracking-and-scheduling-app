@@ -9,7 +9,7 @@ function GeminiRequest() {
   useEffect(() => {
     const fetchAIResponse = async () => {
       const genAI = new GoogleGenerativeAI(
-        "CLIENT-KEY"
+        "API-KEY"
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
