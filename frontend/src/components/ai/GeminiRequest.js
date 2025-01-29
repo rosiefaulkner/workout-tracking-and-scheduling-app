@@ -7,8 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
-  Spinner,
 } from "@heroui/react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -26,7 +24,6 @@ function GeminiRequest({ intensity, equipment, muscle, cat }) {
       return;
     }
   
-    // Use a regular expression to match all `{ title: ..., sets: ..., reps: ... }` objects
     const workoutMatches = response.match(/{[^}]+}/g);
   
     const workouts = workoutMatches
@@ -42,11 +39,10 @@ function GeminiRequest({ intensity, equipment, muscle, cat }) {
             };
           }
           return null;
-        }).filter(Boolean) // Filter out null values from invalid matches
+        }).filter(Boolean)
       : [];
   
-    console.log("workouts: ", workouts);
-    setFormattedResponse(workouts); // Store as an array
+    setFormattedResponse(workouts);
   }, [response]);
 
   useEffect(() => {
@@ -89,8 +85,6 @@ function GeminiRequest({ intensity, equipment, muscle, cat }) {
     return () => clearInterval(interval);
   }, [response]);
 
-    console.log("formattedResponse", formattedResponse);
-    console.log("typeof formattedResponse", typeof formattedResponse);
     return (
       <div>
         <h1>Your Custom Workout</h1>
