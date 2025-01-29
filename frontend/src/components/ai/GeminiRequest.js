@@ -48,7 +48,7 @@ function GeminiRequest({ intensity, equipment, muscle, cat }) {
   useEffect(() => {
     const fetchAIResponse = async () => {
       const genAI = new GoogleGenerativeAI(
-        "YOUR API KEY"
+        "API-KEY"
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -87,8 +87,8 @@ function GeminiRequest({ intensity, equipment, muscle, cat }) {
 
     return (
       <div>
-        <h1>Your Custom Workout</h1>
-        {formattedResponse ? (
+        <h1 className="text-3xl font-extrabold text-primary mb-4">Your Custom Workout</h1>
+        {formattedResponse.length > 1 ? (
           <div className="overflow-x-auto">
           <Table className="min-w-full shadow-md rounded-lg" selectionMode="single" removeWrapper aria-label="Custom workout">
             <TableHeader className="bg-gray-200 text-gray-700">
