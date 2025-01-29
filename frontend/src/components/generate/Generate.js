@@ -7,7 +7,8 @@ import {
   Divider,
   Link,
 } from "@heroui/react";
-import AIIcon from "../assets/AIIcon";
+import AIIcon from "../../assets/AIIcon";
+
 
 function Generate() {
   return (

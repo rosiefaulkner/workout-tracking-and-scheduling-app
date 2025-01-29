@@ -32,6 +32,16 @@ function NavMenu() {
           Discover
         </Link>
       </NavbarItem>
+      <NavbarItem data-active={pathname === "/workout/custom-routine"}>
+        <Link
+          href="/workout/custom-routine"
+          underline="none"
+          color={pathname === "/workout/custom-routine" ? "primary" : "foreground"}
+          className="no-undlerline"
+        >
+          ✨ Custom Routine
+        </Link>
+      </NavbarItem>
       <NavbarItem data-active={pathname === "/workout/create"}>
         <Link
           href="/workout/create"
