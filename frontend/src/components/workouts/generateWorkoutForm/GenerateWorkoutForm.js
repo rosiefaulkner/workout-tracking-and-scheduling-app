@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   Button,
-  Checkbox,
   Select,
   SelectItem,
   useCheckbox,
@@ -87,11 +86,7 @@ export const CheckIcon = (props) => {
   );
 };
 
-const GenerateWorkoutForm = () => {
-  const [intensity, setIntensity] = useState("intermediate");
-  const [equipment, setEquipment] = useState([]);
-  const [muscle, setMuscle] = useState([]);
-  const [cat, setCat] = useState("");
+const GenerateWorkoutForm = ({ equipment, setIntensity = () => {}, setEquipment = () => {}, setMuscle = () => {}, setCat = () => {}, setSubmitted = () => {} }) => {
 
   const equipmentOptions = [
     "body only",
@@ -139,14 +134,7 @@ const GenerateWorkoutForm = () => {
   ];
 
   const handleSubmit = () => {
-    const workoutData = {
-      intensity,
-      muscle,
-      cat,
-      equipment,
-    };
-    console.log("Workout Data:", workoutData);
-    alert("Workout Created!");
+    setSubmitted(true);
   };
   return (
     <div className="mb-8">
@@ -198,7 +186,7 @@ const GenerateWorkoutForm = () => {
             <div className="grid grid-cols-2 gap-2">
               <CheckboxGroup
                 className="gap-1"
-                label=""
+                aria-label="muscle groups"
                 orientation="horizontal"
                 value={equipment}
                 onChange={setEquipment}
